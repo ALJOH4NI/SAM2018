@@ -23,3 +23,9 @@ class Notifcation(models.Model):
     paper = models.ForeignKey(Paper, on_delete=models.CASCADE, null = True)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
+
+class deadline(models.Model):
+    ID = models.CharField(max_length=60, null=True)
+    date = models.CharField(max_length=60, null=True)
+    createdAt = models.CharField(max_length=60, null=True)
+    updatedAt = models.CharField(max_length=60, null = True)
