@@ -2,9 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>PCC DASHBOARD</title>
 </head>
 <body>
-$END$
+    <h1> This is the PCC Dashboard </h1>
+
+
+    <form action="assign" name="assign" method="post">
+        <div>
+            <p><h4> Select a paper you wish to assign: </h4></p>
+
+        {% for item in papers %}
+            <input type="radio" name="paper_id" value={{ item.id }}> {{item.title}} || Submitted by: {{item.user.first_name}} <br>
+        {% endfor %}
+        </div>
+
+        <div>
+            <p><h4> Select three evaluators or PCMs:</h4></p>
+        {% for item in evaluators %}
+            <input type="checkbox" name="pcm_id" value={{ item.id }}> {{item.first_name}} {{item.last_name}} <br>
+        {% endfor %}
+        </div>
+
+        <br><br>
+        <input type="submit" value="Assign Paper">
+    </form>
+
 </body>
 </html>
