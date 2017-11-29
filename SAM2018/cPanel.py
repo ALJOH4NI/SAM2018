@@ -138,10 +138,12 @@ def updateUser(request):
 
 def deleteUser(request):
      userName = request.GET.get('userName')
-     role = request.GET.get('role')
-     user = User.objects.all().filter(username=userName).first()
-     grupos = Group.objects.all().filter(name=role)
-     grupos.filter(name=user).delete()
+     print ("user nqme ehf",userName)
+
+     # role = request.GET.get('role')
+     user = getUserObject(userName).delete()
+     # print ("user nqme ehf",user.username,userName)
+
      return redirect("/userMangament")
 
 # hadlee  deadlines functionality

@@ -73,9 +73,10 @@
                            <button type="submit"  value="submit">submit</button>
                        <br>
                         </form >
-                           <input type="hidden" name ="userName" value="{{ selectedUser.userName }}" >
 
                         <form method="get" action="/deleteUser">
+                            <input type="hidden" name ="userName" value="{{ selectedUser.userName }}" >
+
                           {% csrf_token %}
                         <button type="submit"  value="submit">delete</button>
                         </form>
