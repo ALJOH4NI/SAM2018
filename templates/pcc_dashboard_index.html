@@ -3,14 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <title>PCC DASHBOARD</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+
+<!-- Nan bar -->
+        {% if is_pcc or is_author %}
+         <nav class="navbar navbar-inverse">
+                <div calss="navbar-header">
+				<ul>
+					<li><a class="navbar-brand" href="{% url 'index' %}">SAM2018</a></li>
+					<li><a class="nav navbar-brand "  href="{% url 'logout' %}">Logout</a></li>
+					<li><a class="nav navbar-brand "  href="#">Notification<span class="badge"> {{NumNotifications}} </span></a></li>
+				</ul>
+                </div>
+           </nav>
+        {% endif %}
+
+
+
     <h1> This is the PCC Dashboard </h1>
 
+    <p>Notifications: </p>
+                    {% if NumNotifications > 0 %}
+                            <div class="alert alert-success" role="alert">
+                                <p>You have {{NumNotifications}} new Papers to assign!</p>
+                                {% for n in notification %}
+                                      <ul>
+                                             <li><a href="{% url 'view_paper_url' n.paper.id  %}">{{n.paper.title}} || The Author: {{n.paper.user.first_name}}</a></li>
+                                      </ul>
+                                {% endfor %}
+                            </div>
+                    {% else %}
 
-    <form action="assign" name="assign" method="post">
+                        <div class="alert alert-info" role="alert">
+                                <p>You don't have any new papers to assign !!</p>
+                        </div>
+                        <h3>Check the authors papers :</h3>
+                        <form method="#">
+                                {% for n in papers %}
+                                    <input type="checkbox" name="PAPER" value={{ n.id }}> <a href="{% url 'view_paper_url' n.id  %}">{{n.title}} || The Author: {{n.user.first_name}}</a><br>
+                                {% endfor %}
+                                <br>
+                                <input type="submit" class="btn btn-success" value="Assign paper">
+                        </form>
+                    {% endif %}
+
+
+    <form name="assign" method="post">
+        {% csrf_token %}
         <div>
             <p><h4> Select a paper you wish to assign: </h4></p>
+
 
         {% for item in papers %}
             <input type="radio" name="paper_id" value={{ item.id }}> {{item.title}} || Submitted by: {{item.user.first_name}} <br>
@@ -22,6 +68,7 @@
         {% for item in evaluators %}
             <input type="checkbox" name="pcm_id" value={{ item.id }}> {{item.first_name}} {{item.last_name}} <br>
         {% endfor %}
+            {{evaluators.first_name}}
         </div>
 
         <br><br>

@@ -1,3 +1,20 @@
+<style>
+	body {
+    background: #FF5F6D;
+    background: linear-gradient(to right,#FFC371,#FF5F6D);
+    padding:0px;
+
+}
+
+    footer {
+    padding: 1em;
+    color: white;
+    background-color: black;
+    clear: left;
+    text-align: center;}
+
+</style>
+
 <html lang="en">
 <head>
   <title>Signup</title>
@@ -9,6 +26,11 @@
 </head>
 <body>
 
+<nav class="navbar navbar-inverse">
+                <div calss="navbar-header">
+                    <a class="navbar-brand" href="{% url 'index' %}">SAM2018</a>
+                </div>
+           </nav>
 
 
 <div class="container">
@@ -24,9 +46,6 @@
             <div id="legend">
                     <legend class=""><h2>Signup Form</h2></legend>
             </div>
-
-
-
 
         <div class="control-group">
               <!-- E-mail -->
@@ -53,7 +72,6 @@
             <label class="control-label"  for="username">Username</label>
                 <div class="controls">
                     {{form.username}}
-
                     <p class="help-block">Username can contain any letters or numbers, without spaces</p>
                 </div>
     </div>
@@ -94,9 +112,11 @@
     </div>
   </fieldset>
 
-    s
 </form>
 
 </div>
+
+<footer>Copyright &copy; Group 4</footer>
+
 </body>
 </html>

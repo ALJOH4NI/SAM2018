@@ -1,0 +1,126 @@
+<style>
+
+body {
+  margin: 0;
+  font-weight: 500;
+
+}
+
+section {
+  width: 100%;
+  padding: 0 7%;
+  display: table;
+  margin: 0;
+  max-width: none;
+  background-color: white;
+  }
+
+ .footer {
+    padding: 1em;
+    color: white;
+    background-color: black;
+    clear: left;
+    text-align: center;}
+
+    .card {
+
+            float: left;}
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Author Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+{% if user.is_authenticated %}
+{%if is_author %}
+
+<nav class="navbar navbar-inverse">
+    <div calss="navbar-header">
+            <a class="navbar-brand"  href="{% url 'index' %}">SAM2018</a>
+            <a class="nav navbar-brand "  href="{% url 'logout' %}">Logout</a>
+    </div>
+</nav>
+
+    <div class="container">
+
+        <h3>Welcome, {{user.first_name}}!</h3>
+        <p>Your role is {{groups}}</p>
+
+    {% csrf_token %}
+    <form class="form-horizontal" method="post" enctype="multipart/form-data" style="border:1px solid black">
+    {% csrf_token %}{% csrf_token %}
+
+
+        <div class="input-group text-center">
+            <div class="form-group">
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                        <label>{{form.title.label}}</label>
+                        {{form.title}}
+                        {{form.uplaod}}
+                        {{form.authorName}}
+                        {{form.version}}
+                        {{form.contact}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit">Submit Paper</button>
+
+    </form>
+        {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+  <p3>Your deadline to submit a paper is <i>{{deadline.date}}</i></p3>
+
+
+</div>
+<br>
+<br>
+<br>
+
+
+    <!-- list the author papers and access -->
+<div class="container">
+
+    <h3>Paper submitted: </h3>
+    <hr style="border:1px solid black">
+
+
+            <h2>Active Item in a List Group</h2>
+                {% for n in papers %}
+                    <input type="checkbox" name="PAPER" value={{ n.id }}> <a href="{% url 'view_paper_url' n.id  %}">{{n.title}} || The Author: {{n.user.first_name}}</a><br>
+                {% endfor %}
+
+        <br>
+        <br>
+        <br>
+
+
+
+
+
+
+
+</div> <!-- container -->
+
+<div class="footer">This footer will always be positioned at the bottom of the page, but <strong>not fixed</strong>.</div>
+{% endif %} <!-- if the user is author -->
+{% endif %}  <!-- if user is_authenticated -->
+</body>
+</html>

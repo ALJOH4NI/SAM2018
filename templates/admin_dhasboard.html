@@ -1,0 +1,67 @@
+<style>
+
+body {
+  margin: 0;
+  font-weight: 500;
+
+}
+
+section {
+  width: 100%;
+  padding: 0 7%;
+  display: table;
+  margin: 0;
+  max-width: none;
+  background-color: white;
+  }
+
+ .footer {
+    padding: 1em;
+    color: white;
+    background-color: black;
+    clear: left;
+    text-align: center;}
+
+    .card {
+
+            float: left;}
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Author Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+{% if user.is_authenticated %}
+
+<nav class="navbar navbar-inverse">
+    <div calss="navbar-header">
+            <a class="navbar-brand"  href="{% url 'index' %}">SAM2018</a>
+            <a class="nav navbar-brand "  href="{% url 'logout' %}">Logout</a>
+    </div>
+</nav>
+
+<p1>Please Select a deadline: </p1>
+<form method="post">
+    {% csrf_token %}
+    <input type="date" id="date" for="date" name="date">
+    <select  id="group" for="group" name="group">
+      <option value="PCC">PCC</option>
+      <option value="PCM">PCM</option>
+      <option value="Author">Author</option>
+    </select>
+    <input type="submit">
+</form>
+{{form}}
+
+<div class="footer">This footer will always be positioned at the bottom of the page, but <strong>not fixed</strong>.</div>
+{% endif %}  <!-- if user is_authenticated -->
+</body>
+</html>
