@@ -164,6 +164,7 @@ def signup(request):
                 if form.is_valid():
                     form.save()
                     user = form.save()
+
                     user.groups.add(Group.objects.get(name='Author'))
                     return redirect("/")
             # if a GET (or any other method) we'll create a blank form

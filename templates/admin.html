@@ -1,0 +1,252 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> Admin dashboard </title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="media/styles/eCommerceStyle.css" rel="stylesheet" type="text/css">
+<!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
+<script>var __adobewebfontsappname__="dreamweaver"</script><script src="http://use.edgefonts.net/montserrat:n4:default;source-sans-pro:n2:default.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div id="mainWrapper">
+  <header>
+
+  </header>
+  <section id="offer">
+    <h2 > Admin DashBoard </h2>
+  </section>
+  <div id="content">
+    <section class="sidebar">
+      <!-- This adds a sidebar with 1 searchbox,2 menusets, each with 4 links -->
+      <input type="text"  id="search" value="search">
+      <div id="menubar">
+        <nav class="menu">
+          <h2><!-- Title for menuset 1 -->Admin Actions </h2>
+          <hr>
+          <ul>
+
+            <!-- List of links under menuset 1 -->
+            <li><a href="userMangament" title="Link">Manage Users</a></li>
+            <li><a href="deadlines" title="Link">Manage Deadlines</a></li>
+            <li><a href="notifications" title="Link">Manage Notifications Template</a></li>
+			<li><a href="templates" title="Link">Manage Review  Templates</a></li>
+          </ul>
+        </nav>
+
+      </div>
+    </section>
+
+{# userMangament section  statrt  #}
+    <section class="mainContent">
+
+    {% if userMangament %}
+
+		     <h3>Manage Users</h3><hr><ul>
+
+                  <div class="productRow">
+                    {% if selectedUser %}
+                        <h3>Update Page </h3>
+
+                       <form method="get" action="/upadtaUser">
+                          {% csrf_token %}
+                         <input type="hidden" name ="userName" value="{{ selectedUser.userName }}" >
+                          First name:<br>
+                          <input type="text"  value="{{ selectedUser.fname }}" name="firstname">
+                          <br>
+                          Last name:<br>
+                          <input type="text"  value="{{ selectedUser.lname }}"name="lastname">
+                           <br>
+                          email :<br>
+                          <input type="text"  value="{{ selectedUser.email }}"name="Email">
+                           <br>
+                         role :<br>
+                         <select name="role"  >
+                             <option value="author" {% if selectedUser.role == 'author' %}selected="selected"{% endif %}>author</option>
+                             <option value="PCC" {% if selectedUser.role == 'PCC' %}selected="selected"{% endif %}>PCC</option>
+                             <option value="PCM" {% if selectedUser.role == 'PCM' %}selected="selected"{% endif %}>PCM</option>
+                             <option value="admin"{% if selectedUser.role == 'admin' %}selected="selected"{% endif %}>admin</option>
+                         </select>
+
+                           <br>
+                           <button type="submit"  value="submit">submit</button>
+                       <br>
+                        </form >
+
+                        <form method="get" action="/deleteUser">
+                            <input type="hidden" name ="userName" value="{{ selectedUser.userName }}" >
+
+                          {% csrf_token %}
+                        <button type="submit"  value="submit">delete</button>
+                        </form>
+
+
+                     {% endif %}
+
+                      {% if not selectedUser and not addNewUser %}
+
+                          <table>
+                            <tr>
+                            <th>Fist Name -</th>
+                            <th>Last Name </th>
+                            <th> Role</th>
+                                <th> Selection</th>
+                            </tr>
+
+                             {% for x in UserList %}
+                                 {% if x.fname.strip %}
+                                  <tr >
+                                  <td>  {{x.fname}}</td>
+                               <td>  {{x.lname}}</td>
+                                    <td>  {{x.role}}</td>
+                                      <td><a href="userMangament?selectedUser= {{x.userName}}">select</a> </td>
+                                </tr>
+                                {% endif %}
+                             {% endfor %}
+
+
+
+
+                        </table>
+
+
+                      {% endif %}
+
+                                <li><a href="userMangament?addNewUser=new" title="Link">add New User</a></li>
+
+                                   {% if addNewUser %}
+                                        {% csrf_token %}
+                                           <form method="get" action="/addNewUsers">
+                                              First name:<br>
+                                              <input type="text" name="firstname">
+                                              <br>
+                                              Last name:<br>
+                                              <input type="text" name="lastname">
+                                               <br>
+                                              email :<br>
+                                              <input type="text" name="Email">
+                                               <br>
+                                             role :<br>
+                                             <select name="role">
+                                                 <option value="Author">author</option>
+                                                 <option value="PCC">PCC</option>
+                                                 <option value="PCM">PCM</option>
+                                                 <option value="Admin">admin</option>
+                                             </select>
+
+                                               <br>
+                                               <button type="submit"  value="submit">submit</button>
+                                           <br>
+                                            </form>
+
+
+
+                                    {% endif %}
+
+
+
+
+
+
+
+                   </div>
+
+    {% endif %}
+{# userMangament section  end  #}
+
+      {% if deadlines %}
+			 <h3>Manage Deadlines</h3>
+				<hr>
+		        <ul>
+                <br>
+
+           <table>
+                            <tr>
+                            <th>Name </th>
+                            <th>Date  </th>
+                                <th> Selection</th>
+                            </tr>
+          {% for x in deadlines %}
+              <tr>
+
+              <td>{{ x.nameID}}</td>
+              <td>{{ x.date}}</td>
+              <td>{{ x.id}}</td>
+              </tr>
+
+
+          {% endfor %}
+           </table>
+
+
+
+        {% endif %}
+      {% if notifications %}
+
+		<h3>Manage Notifications Template</h3>
+				<hr>
+		        <ul>
+					<br>
+      <div class="productRow">
+        <article class="productInfo"> <!-- Each individual product description -->
+          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
+          <p class="price">$50</p>
+          <p class="productContent">Content holder</p>
+          <input type="button" name="button" value="Buy" class="buyButton">
+        </article>
+        <article class="productInfo"><!-- Each individual product description -->
+          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
+          <p class="price">$50</p>
+          <p class="productContent">Content holder</p>
+          <input type="button" name="button" value="Buy" class="buyButton">
+        </article>
+        <article class="productInfo"><!-- Each individual product description -->
+          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
+          <p class="price">$50</p>
+          <p class="productContent">Content holder</p>
+          <input type="button" name="button" value="Buy" class="buyButton">
+        </article>
+      </div>
+
+
+        {% endif %}
+
+      {% if templates %}
+
+		<h3>Manage Review  Templates</h3>
+				<hr>
+		        <ul>
+					<br>
+      <div class="productRow">
+        <article class="productInfo"> <!-- Each individual product description -->
+          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
+          <p class="price">$50</p>
+          <p class="productContent">Content holder</p>
+          <input type="button" name="button" value="Buy" class="buyButton">
+        </article>
+        <article class="productInfo"><!-- Each individual product description -->
+          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
+          <p class="price">$50</p>
+          <p class="productContent">Content holder</p>
+          <input type="button" name="button" value="Buy" class="buyButton">
+        </article>
+        <article class="productInfo"><!-- Each individual product description -->
+          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
+          <p class="price">$50</p>
+          <p class="productContent">Content holder</p>
+          <input type="button" name="button" value="Buy" class="buyButton">
+        </article>
+      </div>
+                            {% endif %}
+
+                </ul>
+                </ul>
+                </ul>
+        </ul>
+    </section>
+  </div>
+
+</div>
+</body>
+</html>
