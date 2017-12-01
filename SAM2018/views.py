@@ -9,6 +9,7 @@ from .forms import AssignForm, DeadlineForm
 from django.contrib import messages
 
 
+
 def index(request):
     context = {}
     if request.user.is_authenticated() == False:
@@ -47,6 +48,7 @@ def index(request):
 
             return render(request, 'pcc_dashboard_index.html', context)
 
+        # Admin login
         elif request.user.is_staff:
             form = DeadlineForm(request.POST)
             if request.method == 'POST':
@@ -84,6 +86,7 @@ def index(request):
             context.update({'groups': request.user.groups.all().first(), 'form': form})
             return render(request, 'author_dashboard.html', context)
 
+        # PCM dashboard
         elif request.user.groups.filter(name__in=['PCM']).exists():
             paper = Paper.objects.filter(user=request.user)
             deadline = Deadlines.objects.filter(group='PCM').first()
@@ -112,6 +115,7 @@ def index(request):
     return render(request, 'login.html', context)
 
 
+
 def view_paper(request, id):
     context = {}
     if request.user.is_authenticated():
@@ -137,21 +141,21 @@ def signup(request):
     context = {}
     form = Signupform()  # just showing the form to the user
     context.update({'form': form})  # to render
-    if request.user.is_authenticated():  # if the user assigned, dont make him access the signup link
+    if request.user.is_authenticated():  # if the user assigned, don't make him access the signup link
         return HttpResponseRedirect('/')
     else:
-        if request.method == 'POST':
-            # create a form instance and populate it with data from the request:
-            form = Signupform(request.POST)  # the form with data and chech if the form is valid
-            context.update({'form': form})
-            # check whether it's valid:
-            if form.is_valid():
-                form.save()
-                user = form.save()
-
-                user.groups.add(Group.objects.get(name='Author'))
-                return redirect("/")
-                # if a GET (or any other method) we'll create a blank form
+            if request.method == 'POST':
+                # create a form instance and populate it with data from the request:
+                form = Signupform(request.POST) # the form with data and chech if the form is valid
+                context.update({'form':form})
+                # check whether it's valid:
+                if form.is_valid():
+                    form.save()
+                    user = form.save()
+                    messages.success(request, 'successfully!')
+                    user.groups.add(Group.objects.get(name='Author'))
+                    return redirect("/")
+            # if a GET (or any other method) we'll create a blank form
     return render(request, 'signup.html', context)
 
 
