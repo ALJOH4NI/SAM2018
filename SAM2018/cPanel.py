@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.template.context_processors import csrf
 from django.shortcuts import render_to_response
 
+from SAM2018.models import Deadline
 from SAM2018.user import user, Role
 
 users = []
@@ -147,11 +148,36 @@ def deleteUser(request):
      return redirect("/userMangament")
 
 # hadlee  deadlines functionality
+def setUpDeadlines():
+     Deadline(nameID="paper_submission",date="").save()
+     Deadline(nameID="review_choice").save()
+     Deadline(nameID="submission").save()
 
 def deadlines(request):
      context = {}
 
-     context.update({'deadlines': "yes"})
+     # paper
+     # submission
+     # *review
+     # choice
+     # deadline
+     # *review
+     # submission
+     # deadline
+     # *Author
+     # notification
+     # deadline
+
+     #
+     if len( Deadline.objects.all()) == 0:
+          setUpDeadlines()
+          print (len( Deadline.objects.all()))
+     for te in Deadline.objects.all():
+          print (" dad",te.nameID)
+
+     context.update({'deadlines': Deadline.objects.all()})
+
+
      return render(request, 'admin.html', context)
 
 # hadlee  templates  functionality

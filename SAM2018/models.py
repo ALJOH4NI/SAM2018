@@ -24,8 +24,8 @@ class Notifcation(models.Model):
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
 
-class deadline(models.Model):
-    ID = models.CharField(max_length=60, null=True)
+class Deadline(models.Model):
+    nameID = models.CharField(max_length=60, null=True)
     date = models.CharField(max_length=60, null=True)
-    createdAt = models.CharField(max_length=60, null=True)
-    updatedAt = models.CharField(max_length=60, null = True)
+    createdAt = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now=False, auto_now_add=True)

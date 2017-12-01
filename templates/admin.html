@@ -159,30 +159,27 @@
 			 <h3>Manage Deadlines</h3>
 				<hr>
 		        <ul>
-					<br>
-      <div class="productRow">
+                <br>
+
+           <table>
+                            <tr>
+                            <th>Name </th>
+                            <th>Date  </th>
+                                <th> Selection</th>
+                            </tr>
+          {% for x in deadlines %}
+              <tr>
+
+              <td>{{ x.nameID}}</td>
+              <td>{{ x.date}}</td>
+              <td>{{ x.id}}</td>
+              </tr>
 
 
-        <!-- Each product row contains info of 3 elements -->
-        <article class="productInfo"> <!-- Each individual product description -->
-          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
-          <p class="price">$50</p>
-          <p class="productContent">Content holder</p>
-          <input type="button" name="button" value="Buy" class="buyButton">
-        </article>
-        <article class="productInfo"> <!-- Each individual product description -->
-          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
-          <p class="price">$50</p>
-          <p class="productContent">Content holder</p>
-          <input type="button" name="button" value="Buy" class="buyButton">
-        </article>
-        <article class="productInfo"><!-- Each individual product description -->
-          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
-          <p class="price">$50</p>
-          <p class="productContent">Content holder</p>
-          <input type="button" name="button" value="Buy" class="buyButton">
-        </article>
-      </div>
+          {% endfor %}
+           </table>
+
+
 
         {% endif %}
       {% if notifications %}
