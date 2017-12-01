@@ -1,4 +1,4 @@
-from enum import Enum
+from aetypes import Enum
 class Role(Enum):
     PCC = 'PCC'
     Author = 'Author'
