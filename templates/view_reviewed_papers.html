@@ -31,7 +31,7 @@ section {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PCC DASHBOARD</title>
+    <title>List of Reviewed Papers</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -49,46 +49,16 @@ section {
            </nav>
         {% endif %}
 
-        <h1> PCC Dashboard </h1>
-
-        <div>
-            {% if NumNotifications > 0 %}
-            <div class="alert alert-success" role="alert">
-                <p>You have {{NumNotifications}} new Papers to assign!</p>
-                {% for n in notification %}
-                <ul>
-                    <li><a href="{% url 'view_paper_url' n.paper.id  %}">{{n.paper.title}} || The Author: {{n.paper.user.first_name}}</a></li>
-                </ul>
-                {% endfor %}
-            </div>
-            {% else %}
-
-            <div class="alert alert-info" role="alert">
-                <p>You don't have any new papers to assign !!</p>
-            </div>
-        </div>
-        {% endif %}
+        <h1> List of Reviewed Papers </h1>
 
         <form name="assign" method="post">
             {% csrf_token %}
             <div>
-                <p><h4> Select a paper you wish to assign: </h4></p>
-
-                {% for item in papers %}
+                {% for item in paper_reviews %}
                 <input type="radio" name="paper_id" value={{ item.id }}> {{item.title}} || Submitted by: {{item.user.first_name}} <br>
                 {% endfor %}
             </div>
-
-            <div>
-                <p><h4> Select three evaluators or PCMs:</h4></p>
-                {% for item in evaluators %}
-                <input type="checkbox" name="pcm_list" value={{ item.id }}> {{item.first_name}} {{item.last_name}} <br>
-                {% endfor %}
-                {{evaluators.first_name}}
-            </div>
-
             <br><br>
-            <input type="submit" class="btn btn-success" value="Assign Paper">
 
         </form>
 

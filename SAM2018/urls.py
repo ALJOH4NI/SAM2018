@@ -12,6 +12,7 @@ urlpatterns = [
                   url(r'^logout/$', auth_views.logout,{'next_page': 'index'}, name='logout'),
                   url(r'^signup', views.signup, name='signup'),
                   url(r'^paper/(?P<id>\d+)/$', views.view_paper, name='view_paper_url'),
+                  url(r'^view_reviewed_papers/$', views.view_reviewed_papers, name='view_reviewed_papers'),
                   url(r'^cpanel', cPanel.admin),
                           url(r'^userMangament', cPanel.userMangament)
                         ,  url(r'^deadlines', cPanel.deadlines)
