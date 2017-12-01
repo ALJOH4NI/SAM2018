@@ -34,7 +34,7 @@ def readUserInfoSaveIntoArray():
      del users[:]
      alluser = User.objects.all()
      for u in alluser:
-          users.append(user(u.first_name,u.last_name,u.email,whatUserGroup(u),u.username))
+          users.append(user(u.first_name,u.last_name,u.email,whatUserGroup(u),u.username,u.password))
 
 
 def getUserObject(usename):
@@ -49,7 +49,7 @@ def getUserData(usename):
      for u in alluser:
           print("looking at   " + u.username + "    cpmapred wit  " + curentname)
           if u.username == curentname.strip():
-               return user(u.first_name,u.last_name,u.email,whatUserGroup(u),u.username)
+               return user(u.first_name,u.last_name,u.email,whatUserGroup(u),u.username,u.password)
      return 'no user'
 
 
@@ -82,14 +82,17 @@ def addNewUser(request):
      context = {}
      firstname = request.GET.get('firstname')
      lastname = request.GET.get('lastname')
+     userName = request.GET.get('userName')
+     password = request.GET.get('password')
      Email = request.GET.get('Email')
+
      role = request.GET.get('role')
 
-     user = User.objects.create_user(username=firstname + lastname,
+     user = User.objects.create_user(username=userName,
                                      email=Email,
                               first_name =firstname,
                               last_name = lastname,
-                                     password=firstname)
+                                     password=password)
 
      groupName  = ''
      print ("role role role"+role)
@@ -118,9 +121,9 @@ def updateUser(request):
      Email = request.GET.get('Email')
      role = request.GET.get('role')
      userName = request.GET.get('userName')
-     print (userName)
+     password = request.GET.get('password')
      User.objects.all().filter(username=userName).update(first_name =firstname,
-                              last_name = lastname)
+                              last_name = lastname,username=userName,password=password,email=Email)
      groupName = ''
      user = getUserObject(userName)
 
@@ -150,25 +153,14 @@ def deleteUser(request):
 # hadlee  deadlines functionality
 def setUpDeadlines():
      Deadline(nameID="paper_submission",date="").save()
-     Deadline(nameID="review_choice").save()
-     Deadline(nameID="submission").save()
 
 def deadlines(request):
      context = {}
-
-     # paper
-     # submission
-     # *review
-     # choice
-     # deadline
-     # *review
-     # submission
-     # deadline
-     # *Author
-     # notification
-     # deadline
-
-     #
+     selected = request.GET.get('selected')
+     if selected:
+          selected = selected.strip()
+          print ("sdsds",Deadline.objects.all().filter(nameID=selected).first())
+          context.update({'selected': Deadline.objects.all().filter(nameID=selected).first()})
      if len( Deadline.objects.all()) == 0:
           setUpDeadlines()
           print (len( Deadline.objects.all()))
@@ -180,6 +172,18 @@ def deadlines(request):
 
      return render(request, 'admin.html', context)
 
+
+
+def configsDeadLine(request):
+     id = request.GET.get('pk')
+     date = request.GET.get('date')
+     print ("configsDeadLine",id,date)
+     context = {}
+
+     context.update({'deadlines': Deadline.objects.all()})
+     Deadline.objects.all().filter(nameID=id).update(date=date)
+
+     return render(request, 'admin.html', context)
 # hadlee  templates  functionality
 
 def templates(request):

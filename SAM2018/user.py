@@ -12,10 +12,11 @@ class user:
     email = ""
     role =  Role.Author
     userName = ""
-
-    def __init__(self, fname,lname,email,role,userName):
+    password = "123"
+    def __init__(self, fname,lname,email,role,userName,password):
         self.userName = userName
         self.fname = fname
         self.lname = lname
         self.email = email
         self.role = role
+        self.password = password
