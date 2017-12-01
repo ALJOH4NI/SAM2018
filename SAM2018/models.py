@@ -37,3 +37,9 @@ class Deadlines(models.Model):
     date = models.CharField(max_length=60, null=True)
     group = models.CharField(max_length=60, null=True)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
+
+class Deadline(models.Model):
+    nameID = models.CharField(max_length=60, null=True)
+    date = models.CharField(max_length=60, null=True)
+    createdAt = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now=False, auto_now_add=True)
