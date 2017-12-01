@@ -10,9 +10,6 @@ from django.contrib import messages
 
 
 
-
-
-
 def index(request):
     context = {}
     if request.user.is_authenticated() == False:
@@ -48,6 +45,7 @@ def index(request):
 
             return render(request, 'pcc_dashboard_index.html', context)
 
+        # Admin login
         elif request.user.is_staff:
             form = DeadlineForm(request.POST)
             if request.method == 'POST':
@@ -60,7 +58,6 @@ def index(request):
 
             context.update({'form':form})
             return render(request, 'admin_dhasboard.html', context)
-
 
 
         elif request.user.groups.filter(name__in=['Author']).exists():
@@ -86,7 +83,7 @@ def index(request):
             context.update({'groups': request.user.groups.all().first(), 'form':form})
             return render(request, 'author_dashboard.html', context)
 
-
+        # PCM dashboard
         elif request.user.groups.filter(name__in=['PCM']).exists():
             paper = Paper.objects.filter(user=request.user)
             deadline = Deadlines.objects.filter(group='PCM').first()
@@ -115,9 +112,6 @@ def index(request):
 
 
 
-
-
-
 def view_paper(request, id):
     context = {}
     if request.user.is_authenticated():
@@ -130,30 +124,22 @@ def view_paper(request, id):
     return render(request, 'view_paper.html', context)
 
 
+#def assign(request):
+ #   if request.method == 'POST':
+  #      form = AssignForm(request.POST)
+   #     if form.is_valid():
+    #        review = form.save()
+     #       review.add()
+    #else:
+     #   form = AssignForm()
 
-
-
-def assign(request):
-    if request.method == 'POST':
-        form = AssignForm(request.POST)
-        if form.is_valid():
-            review = form.save()
-            review.add()
-    else:
-        form = AssignForm()
-
-    return render(request, 'pcc_dashboard_index.html')
-
-
-
-
-
+    #return render(request, 'pcc_dashboard_index.html')
 
 def signup(request):
     context = {}
     form = Signupform() # just showing the form to the user
     context.update({'form': form})# to render
-    if request.user.is_authenticated():  #if the user assigned, dont make him access the signup link
+    if request.user.is_authenticated():  #if the user assigned, don't make him access the signup link
         return HttpResponseRedirect('/')
     else:
             if request.method == 'POST':
@@ -164,7 +150,7 @@ def signup(request):
                 if form.is_valid():
                     form.save()
                     user = form.save()
-
+                    messages.success(request, 'successfully!')
                     user.groups.add(Group.objects.get(name='Author'))
                     return redirect("/")
             # if a GET (or any other method) we'll create a blank form

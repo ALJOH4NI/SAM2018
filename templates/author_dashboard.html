@@ -22,9 +22,6 @@ section {
     clear: left;
     text-align: center;}
 
-    .card {
-
-            float: left;}
 </style>
 
 <!DOCTYPE html>
@@ -53,43 +50,41 @@ section {
 
         <h3>Welcome, {{user.first_name}}!</h3>
         <p>Your role is {{groups}}</p>
+        <hr style="border:1px solid black">
 
     {% csrf_token %}
-    <form class="form-horizontal" method="post" enctype="multipart/form-data" style="border:1px solid black">
+    <form class="form-horizontal" method="post" enctype="multipart/form-data">
     {% csrf_token %}{% csrf_token %}
 
 
-        <div class="input-group text-center">
-            <div class="form-group">
-                <div class="cols-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
                         <label>{{form.title.label}}</label>
-                        {{form.title}}
-                        {{form.uplaod}}
-                        {{form.authorName}}
-                        {{form.version}}
-                        {{form.contact}}
-                    </div>
-                </div>
-            </div>
-        </div>
+                        {{form.title}} <br>
+                        <label>{{form.upload.label}}</label>
+                        {{form.uplaod}} <br>
+                        <label>{{form.authorName.label}}</label>
+                        {{form.authorName}} <br>
+                        <label>{{form.version.label}}</label>
+                        {{form.version}} <br>
+                        <label>{{form.contact.label}}</label>
+                        {{form.contact}} <br>
 
         <button type="submit">Submit Paper</button>
 
     </form>
+
         {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+        {% endif %}
 
   <p3>Your deadline to submit a paper is <i>{{deadline.date}}</i></p3>
 
-
 </div>
+
+
 <br>
 <br>
 <br>
@@ -97,26 +92,16 @@ section {
 
     <!-- list the author papers and access -->
 <div class="container">
+<hr style="border:1px solid black">
 
-    <h3>Paper submitted: </h3>
-    <hr style="border:1px solid black">
-
-
-            <h2>Active Item in a List Group</h2>
-                {% for n in papers %}
-                    <input type="checkbox" name="PAPER" value={{ n.id }}> <a href="{% url 'view_paper_url' n.id  %}">{{n.title}} || The Author: {{n.user.first_name}}</a><br>
+            <h2>Paper submitted: </h2>
+                {% for n in paper %}
+                    <input type="checkbox" name="PAPER" value={{ n.id }}> <a href="{% url 'view_paper_url' n.id  %}"> {{n.title}} || The Author: {{n.user.first_name}}</a><br>
                 {% endfor %}
 
-        <br>
-        <br>
-        <br>
-
-
-
-
-
-
-
+<br>
+<br>
+<br>
 </div> <!-- container -->
 
 <div class="footer">This footer will always be positioned at the bottom of the page, but <strong>not fixed</strong>.</div>

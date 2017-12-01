@@ -1,13 +1,10 @@
 from __future__ import print_function
-
 import sys
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User, Group
-
 from django.shortcuts import render, redirect
 from django.template.context_processors import csrf
 from django.shortcuts import render_to_response
-
 from SAM2018.models import Deadline
 from SAM2018.user import user, Role
 
@@ -27,8 +24,6 @@ def whatUserGroup(user):
           return Role.PCM
      else:
           return Role.Admin
-
-
 
 def readUserInfoSaveIntoArray():
      del users[:]

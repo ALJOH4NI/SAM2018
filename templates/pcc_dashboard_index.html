@@ -58,7 +58,7 @@
             <p><h4> Select a paper you wish to assign: </h4></p>
 
 
-        {% for item in papers %}
+        {% for item in paper %}
             <input type="radio" name="paper_id" value={{ item.id }}> {{item.title}} || Submitted by: {{item.user.first_name}} <br>
         {% endfor %}
         </div>
