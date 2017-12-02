@@ -4,6 +4,12 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class Report(models.Model):
+    date = models.DateTimeField(auto_now=False, auto_now_add=True)
+    comments = models.CharField(max_length=500, null=True)
+    rate = models.CharField(max_length=1, null=True)
+
+
 class Paper(models.Model):
     title = models.CharField(max_length=60, null=True)
     authorName = models.CharField(max_length=60, null=True)
@@ -12,8 +18,6 @@ class Paper(models.Model):
     uplaod = models.FileField(upload_to='documents/%Y/%m/%d', null=True)
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    # pcm = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    # rate = models.CharField(max_length=60, null = True)
 
 
 class Review(models.Model):
@@ -22,6 +26,7 @@ class Review(models.Model):
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
     pcm = models.ForeignKey(User, on_delete=models.CASCADE)
     rate = models.CharField(max_length=1, null=True)
+    report = models.ForeignKey(Report, on_delete=models.CASCADE, null=True)
 
 
 class Notifcation(models.Model):
@@ -29,13 +34,6 @@ class Notifcation(models.Model):
     paper = models.ForeignKey(Paper, on_delete=models.CASCADE, null=True)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-
-
-class Report(models.Model):
-    date = models.DateTimeField(auto_now=False, auto_now_add=True)
-    comments = models.CharField(max_length=500, null=True)
-    rate = models.CharField(max_length=1, null=True)
-    # reviews = models.ManyToManyField(Review, related_name='id')
 
 
 class Deadlines(models.Model):

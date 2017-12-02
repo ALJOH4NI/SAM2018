@@ -1,9 +1,12 @@
+import sys
+
+from django.db.models import Count
 from django.shortcuts import render, render_to_response, redirect
 from .forms import Signupform, UplaodFile
 from django.contrib.auth import logout, authenticate, login, update_session_auth_hash
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.models import Group
-from .models import Paper, Notifcation, Deadlines, Review
+from .models import Paper, Notifcation, Deadlines, Review, Report
 from django.contrib.auth.models import User
 from .forms import AssignForm, DeadlineForm
 from django.contrib import messages
@@ -23,7 +26,6 @@ def index(request):
 
     elif request.user.is_authenticated():  # PCC, Author and PCM
         if request.user.groups.filter(name__in=['PCC']).exists():
-            pcm_users = User.objects.filter(groups__name='PCM')
 
             if request.method == 'POST':
                 paper_id = request.POST["paper_id"]
@@ -31,20 +33,25 @@ def index(request):
                 paper = Paper.objects.filter(id=paper_id).first()
                 for item in pcms:
                     pcm_user = User.objects.filter(id=item).first()
-                    if Review.objects.filter(pcm=pcm_users, paper=paper).count() == 0:
+                    if Review.objects.filter(pcm=pcm_user, paper=paper).count() == 0:
                         review = Review(paper=paper, pcm=pcm_user)
                         review.save()
                 messages.success(request, 'The paper has been assign successfully!')
 
             reviews = Review.objects.all()
+            pcm_users = User.objects.filter(groups__name='PCM')
             papers = Paper.objects.all().exclude(id__in=[x.paper.id for x in reviews])
             context.update({'papers': papers,
                             'evaluators': pcm_users})
             context.update({'is_pcc': 'is_pcc'})
             notification = Notifcation.objects.filter(read=False)
             num_notification = len(notification)
-            context.update({'groups': request.user.groups.all().first(), 'NumNotifications': num_notification,
-                            'notification': notification})
+            num_papers = len(papers)
+            context.update({'groups': request.user.groups.all().first(),
+                            'NumNotifications': num_notification,
+                            'notification': notification,
+                            'paper_count': num_papers
+                            })
 
             return render(request, 'pcc_dashboard_index.html', context)
 
@@ -132,9 +139,44 @@ def view_reviewed_papers(request):
     context = {}
     if request.user.is_authenticated():
         if request.user.groups.filter(name__in=['PCC']).exists():
-            paper = Paper.objects.filter(id=id).first()
-            context.update({'paper_reviews': paper})
+            data = []
+            for paper in Paper.objects.all():
+                reviews = []
+                review_items = Review.objects.filter(paper=paper)
+                for review in review_items:
+                    reviews.append(review)
+                if len(review_items) > 0:
+                    data.append({'paper': paper, 'reviews': reviews})
+
+            context.update({'paper_reviews': data})
     return render(request, 'view_reviewed_papers.html', context)
+
+
+def generate_report(request, paper_id):
+    context = {}
+    if request.user.is_authenticated():
+        if request.user.groups.filter(name__in=['PCC']).exists():
+            paper = Paper.objects.filter(id=paper_id).first()
+            reviews = []
+            for review in Review.objects.filter(paper=paper):
+                reviews.append(review)
+
+            context.update({'paper': paper, 'reviews': reviews})
+
+            if request.method == 'POST':
+                rating = request.POST["rating"]
+                comment = request.POST["comment"]
+                report = Report(comments=comment, rate=rating)
+                report.save()
+                paper = Paper.objects.filter(id=paper_id).first()
+                for review in Review.objects.filter(paper=paper):
+                    review.report = report
+                    review.save()
+
+                messages.success(request, 'The report has been saved successfully!')
+                return redirect('index')
+
+    return render(request, 'generate_report.html', context)
 
 
 def signup(request):

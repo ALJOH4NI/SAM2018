@@ -37,20 +37,17 @@ section {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-
-        {% if is_pcc %}
          <nav class="navbar navbar-inverse">
                 <div calss="navbar-header">
 				    <a class="navbar-brand" href="{% url 'index' %}">SAM2018</a>
 				    <a class="nav navbar-brand"  href="">List Reports</a>
-				    <a class="nav navbar-brand"  href="{% url 'view_reviewed_papers' %}">Generate Report</a>
+				    <a class="nav navbar-brand"  href="{% url 'view_reviewed_papers' %}">Generate Reports</a>
 				    <a class="nav navbar-brand"  href="{% url 'logout' %}">Logout</a>
                 </div>
            </nav>
-        {% endif %}
-
         <h1> PCC Dashboard </h1>
 
+        {% if paper_count > 0 %}
         <div>
             {% if NumNotifications > 0 %}
             <div class="alert alert-success" role="alert">
@@ -66,8 +63,8 @@ section {
             <div class="alert alert-info" role="alert">
                 <p>You don't have any new papers to assign !!</p>
             </div>
+            {% endif %}
         </div>
-        {% endif %}
 
         <form name="assign" method="post">
             {% csrf_token %}
@@ -91,15 +88,18 @@ section {
             <input type="submit" class="btn btn-success" value="Assign Paper">
 
         </form>
-
+        {% else %}
+        <br><br>
+        <p>There are no pending papers.</p>
+        {% endif %}
 
         <div>
             {% if messages %}
-            <ul class="messages">
                 {% for message in messages %}
-                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}> {{ message }} </li>
+            <div class="alert alert-success">
+                <strong>Success!</strong>  {{ message }}
+            </div>
                 {% endfor %}
-            </ul>
             {% endif %}
         </div>
 </body>
