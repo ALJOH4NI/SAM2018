@@ -143,6 +143,15 @@ def view_paper(request, id):
     return render(request, 'view_paper.html', context)
 
 
+def view_reports(request):
+    context = {}
+    if request.user.is_authenticated():
+        if request.user.groups.filter(name__in=['PCC']).exists():
+            reports = Report.objects.all()
+            context.update({'reports': reports})
+    return render(request, 'view_reports.html', context)
+
+
 def view_reviewed_papers(request):
     context = {}
     if request.user.is_authenticated():
@@ -164,25 +173,25 @@ def generate_report(request, paper_id):
     context = {}
     if request.user.is_authenticated():
         if request.user.groups.filter(name__in=['PCC']).exists():
-            paper = Paper.objects.filter(id=paper_id).first()
-            reviews = []
-            for review in Review.objects.filter(paper=paper):
-                reviews.append(review)
-
-            context.update({'paper': paper, 'reviews': reviews})
-
             if request.method == 'POST':
+                paper = Paper.objects.filter(id=paper_id).first()
                 rating = request.POST["rating"]
                 comment = request.POST["comment"]
-                report = Report(comments=comment, rate=rating)
+                report = Report(comments=comment, rate=rating, paper=paper)
                 report.save()
-                paper = Paper.objects.filter(id=paper_id).first()
                 for review in Review.objects.filter(paper=paper):
                     review.report = report
                     review.save()
 
                 messages.success(request, 'The report has been saved successfully!')
                 return redirect('index')
+
+            paper = Paper.objects.filter(id=paper_id).first()
+            reviews = []
+            for review in Review.objects.filter(paper=paper):
+                reviews.append(review)
+
+            context.update({'paper': paper, 'reviews': reviews})
 
     return render(request, 'generate_report.html', context)
 

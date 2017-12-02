@@ -13,6 +13,7 @@ urlpatterns = [
                   url(r'^signup', views.signup, name='signup'),
                   url(r'^paper/(?P<id>\d+)/$', views.view_paper, name='view_paper_url'),
                   url(r'^view_reviewed_papers/$', views.view_reviewed_papers, name='view_reviewed_papers'),
+                  url(r'^view_reports/$', views.view_reports, name='view_reports'),
                   url(r'^generate_report/(?P<paper_id>\d+)/$', views.generate_report, name='generate_report'),
                   url(r'^cpanel', cPanel.admin),
                           url(r'^userMangament', cPanel.userMangament)
