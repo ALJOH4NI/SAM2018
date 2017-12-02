@@ -5,7 +5,7 @@ from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
 from django.template.context_processors import csrf
 from django.shortcuts import render_to_response
-from SAM2018.models import Deadline
+from SAM2018.models import Deadline, NotifcationTemp
 from SAM2018.user import user, Role
 
 users = []
@@ -139,9 +139,7 @@ def deleteUser(request):
      userName = request.GET.get('userName')
      print ("user nqme ehf",userName)
 
-     # role = request.GET.get('role')
      user = getUserObject(userName).delete()
-     # print ("user nqme ehf",user.username,userName)
 
      return redirect("/userMangament")
 
@@ -188,11 +186,36 @@ def templates(request):
      return render(request, 'admin.html', context)
 
 # hadlee  notifications  functionality
+def setUpNotifcationTemp():
+     NotifcationTemp(nameID="paper_submission",text="you have a nice paper").save()
 
 def notifications(request):
      context = {}
+     selected = request.GET.get('selected')
+     if selected:
+          selected = selected.strip()
+          print("sdsds", NotifcationTemp.objects.all().filter(nameID=selected).first())
+          context.update({'selected': NotifcationTemp.objects.all().filter(nameID=selected).first()})
 
-     context.update({'notifications': "yes"})
+
+     if len(NotifcationTemp.objects.all()) == 0:
+          setUpNotifcationTemp()
+
+
+
+
+     # NotifcationTemp
+     context.update({'notificationsTemp': NotifcationTemp.objects.all()})
      return render(request, 'admin.html', context)
 
 
+def updateNT(request):
+     id = request.GET.get('pk')
+     date = request.GET.get('date')
+     print("updateNT", id, date)
+     context = {}
+     context.update({'notificationsTemp': NotifcationTemp.objects.all()})
+
+     NotifcationTemp.objects.all().filter(nameID=id).update(text=date)
+
+     return render(request, 'admin.html', context)

@@ -1,9 +1,16 @@
+import sys
+
+from django.db.models import Count
 from django.shortcuts import render, render_to_response, redirect
 from .forms import Signupform, UplaodFile
 from django.contrib.auth import logout, authenticate, login, update_session_auth_hash
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.models import Group
+<<<<<<< HEAD
 from .models import Paper, Notifcation, Deadlines, Review, Deadline
+=======
+from .models import Paper, Notifcation, Deadlines, Review, Report
+>>>>>>> d864f4c3a5f2acc1f1891500efb295b7f4e79f05
 from django.contrib.auth.models import User
 from .forms import AssignForm, DeadlineForm
 from django.contrib import messages
@@ -25,7 +32,6 @@ def index(request):
 
     elif request.user.is_authenticated():  # PCC, Author and PCM
         if request.user.groups.filter(name__in=['PCC']).exists():
-            pcm_users = User.objects.filter(groups__name='PCM')
 
             if request.method == 'POST':
                 paper_id = request.POST["paper_id"]
@@ -33,7 +39,7 @@ def index(request):
                 paper = Paper.objects.filter(id=paper_id).first()
                 for item in pcms:
                     pcm_user = User.objects.filter(id=item).first()
-                    if Review.objects.filter(pcm=pcm_users, paper=paper).count() == 0:
+                    if Review.objects.filter(pcm=pcm_user, paper=paper).count() == 0:
                         review = Review(paper=paper, pcm=pcm_user)
                         review.save()
                 messages.success(request, 'The paper has been assign successfully!')
@@ -47,6 +53,8 @@ def index(request):
             num_notification = len(notification)
             context.update({'groups': request.user.groups.all().first(), 'NumNotifications': num_notification,
                             'notification': notification})
+            num_papers = len(papers)
+            context.update({'groups': request.user.groups.all().first(),
 
             return render(request, 'pcc_dashboard_index.html', context)
 
@@ -125,6 +133,14 @@ def index(request):
             context.update({'groups': request.user.groups.all().first(), 'form': form})
             return render(request, 'pcm_dashboard.html', context)
     return render(request, 'login.html', context)
+#
+# def view_submitted_papers(request):
+#     context = {}
+#     if request.user.is_authenticated():
+#         if request.user.groups.filter(name__in=['PCM']).exists():
+#             paper = Paper.objects.filter(id=id).first()
+#             context.update({'paper_submitted': paper})
+#     return render(request, 'pcm_dashboard.html', context)
 
 
 
@@ -140,13 +156,57 @@ def view_paper(request, id):
     return render(request, 'view_paper.html', context)
 
 
+def view_reports(request):
+    context = {}
+    if request.user.is_authenticated():
+        if request.user.groups.filter(name__in=['PCC']).exists():
+            reports = Report.objects.all()
+            context.update({'reports': reports})
+    return render(request, 'view_reports.html', context)
+
+
 def view_reviewed_papers(request):
     context = {}
     if request.user.is_authenticated():
         if request.user.groups.filter(name__in=['PCC']).exists():
-            paper = Paper.objects.filter(id=id).first()
-            context.update({'paper_reviews': paper})
+            data = []
+            for paper in Paper.objects.all():
+                reviews = []
+                review_items = Review.objects.filter(paper=paper)
+                for review in review_items:
+                    reviews.append(review)
+                if len(review_items) > 0:
+                    data.append({'paper': paper, 'reviews': reviews})
+
+            context.update({'paper_reviews': data})
     return render(request, 'view_reviewed_papers.html', context)
+
+
+def generate_report(request, paper_id):
+    context = {}
+    if request.user.is_authenticated():
+        if request.user.groups.filter(name__in=['PCC']).exists():
+            if request.method == 'POST':
+                paper = Paper.objects.filter(id=paper_id).first()
+                rating = request.POST["rating"]
+                comment = request.POST["comment"]
+                report = Report(comments=comment, rate=rating, paper=paper)
+                report.save()
+                for review in Review.objects.filter(paper=paper):
+                    review.report = report
+                    review.save()
+
+                messages.success(request, 'The report has been saved successfully!')
+                return redirect('index')
+
+            paper = Paper.objects.filter(id=paper_id).first()
+            reviews = []
+            for review in Review.objects.filter(paper=paper):
+                reviews.append(review)
+
+            context.update({'paper': paper, 'reviews': reviews})
+
+    return render(request, 'generate_report.html', context)
 
 
 def signup(request):

@@ -13,6 +13,8 @@ urlpatterns = [
                   url(r'^signup', views.signup, name='signup'),
                   url(r'^paper/(?P<id>\d+)/$', views.view_paper, name='view_paper_url'),
                   url(r'^view_reviewed_papers/$', views.view_reviewed_papers, name='view_reviewed_papers'),
+                  url(r'^view_reports/$', views.view_reports, name='view_reports'),
+                  url(r'^generate_report/(?P<paper_id>\d+)/$', views.generate_report, name='generate_report'),
                   url(r'^cpanel', cPanel.admin),
                           url(r'^userMangament', cPanel.userMangament)
                         ,  url(r'^deadlines', cPanel.deadlines)
@@ -22,5 +24,9 @@ urlpatterns = [
                              url(r'^deleteUser', cPanel.deleteUser),
                              url(r'^addNewUser', cPanel.addNewUser),
                             url(r'^configsDeadLine', cPanel.configsDeadLine),
+<<<<<<< HEAD
                             url(r'^paperUploaded', views.index)
+=======
+                            url(r'^updateNT', cPanel.updateNT)
+>>>>>>> d864f4c3a5f2acc1f1891500efb295b7f4e79f05
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
