@@ -52,6 +52,13 @@ section {
         <p>Your role is {{groups}}</p>
         <hr style="border:1px solid black">
 
+     {% if not allowed %}
+         <div class="alert alert-danger" role="alert">
+            <p>You don't have any new papers to assign !!</p>
+         </div>
+     {% endif %}
+
+    {% if allowed %}
     {% csrf_token %}
     <form class="form-horizontal" method="post" enctype="multipart/form-data">
     {% csrf_token %}{% csrf_token %}
@@ -69,27 +76,29 @@ section {
                         {{form.contact}} <br>
 
         <button type="submit">Submit Paper</button>
-
     </form>
 
-        {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
+        {% if uploaded %}
+           <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js">
+    $(document).ready(function(){
+        function myFunction(){
+            alert("ede")
+        }
+    })
+
+</script>
+            <div  onload="myFunction()"class="alert alert-success" role="alert">
+            <p>You don't have any new papers to assign !!</p>
+         </div>
         {% endif %}
 
-  <p3>Your deadline to submit a paper is <i>{{deadline.date}}</i></p3>
+    {% endif %}
 
 </div>
 
-
 <br>
 <br>
 <br>
-
-
     <!-- list the author papers and access -->
 <div class="container">
 <hr style="border:1px solid black">
@@ -103,8 +112,6 @@ section {
 <br>
 <br>
 </div> <!-- container -->
-
-<div class="footer">This footer will always be positioned at the bottom of the page, but <strong>not fixed</strong>.</div>
 {% endif %} <!-- if the user is author -->
 {% endif %}  <!-- if user is_authenticated -->
 </body>

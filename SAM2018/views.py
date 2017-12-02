@@ -3,14 +3,16 @@ from .forms import Signupform, UplaodFile
 from django.contrib.auth import logout, authenticate, login, update_session_auth_hash
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.models import Group
-from .models import Paper, Notifcation, Deadlines, Review
+from .models import Paper, Notifcation, Deadlines, Review, Deadline
 from django.contrib.auth.models import User
 from .forms import AssignForm, DeadlineForm
 from django.contrib import messages
+import datetime
 
 
 
 def index(request):
+
     context = {}
     if request.user.is_authenticated() == False:
         if request.method == "POST":
@@ -63,28 +65,38 @@ def index(request):
             return render(request, 'admin_dhasboard.html', context)
 
         elif request.user.groups.filter(name__in=['Author']).exists():
+            paper_submissionData = Deadline.objects.all().filter(nameID='paper_submission').first().date
+            currentDate = datetime.datetime.now()
+            objectDatetime = datetime.datetime.strptime(paper_submissionData, "%Y-%m-%d")
             paper = Paper.objects.filter(user=request.user)
-            deadline = Deadlines.objects.filter(group='Author').first()
-
-            context.update({'is_author': 'is_author'})
-            context.update({'deadline': deadline})
             context.update({'paper': paper})
+            context.update({'is_author': 'is_author'})
+            context.update({'groups': request.user.groups.all().first()})
 
-            form = UplaodFile(request.POST, request.FILES)
-            if request.method == "POST":
+            if request.GET.get('paperUploaded'):
+                context.update({'uploaded': 'uploaded'})
+
+            if currentDate.date() < objectDatetime.date():
+                context.update({'allowed': '-'})
                 form = UplaodFile(request.POST, request.FILES)
-                if form.is_valid():
-                    newpaper = Paper(uplaod=request.FILES['uplaod'], title=request.POST['title'], version="1",
-                                     user=request.user)
-                    newpaper.save()
-                    messages.success(request, 'Your password was updated successfully!')
-                    user = User.objects.filter(groups__name='PCC').first()
-                    notification = Notifcation(user=user, paper=newpaper)
-                    notification.save()
-            else:
-                form = UplaodFile()
-            context.update({'groups': request.user.groups.all().first(), 'form': form})
+                if request.method == "POST":
+                    form = UplaodFile(request.POST, request.FILES)
+                    if form.is_valid():
+                        newpaper = Paper(uplaod=request.FILES['uplaod'], title=request.POST['title'], version="1",
+                                         user=request.user)
+                        newpaper.save()
+                        user = User.objects.filter(groups__name='PCC').first()
+                        notification = Notifcation(user=user, paper=newpaper)
+                        notification.save()
+                        context.update({'uploaded': 'uploaded'})
+                        return redirect('/?paperUploaded="true"')
+                else:
+                    form = UplaodFile()
+                    context.update({'form': form})
+
+
             return render(request, 'author_dashboard.html', context)
+
 
         # PCM dashboard
         elif request.user.groups.filter(name__in=['PCM']).exists():
