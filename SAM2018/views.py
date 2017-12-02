@@ -113,6 +113,14 @@ def index(request):
             context.update({'groups': request.user.groups.all().first(), 'form': form})
             return render(request, 'pcm_dashboard.html', context)
     return render(request, 'login.html', context)
+#
+# def view_submitted_papers(request):
+#     context = {}
+#     if request.user.is_authenticated():
+#         if request.user.groups.filter(name__in=['PCM']).exists():
+#             paper = Paper.objects.filter(id=id).first()
+#             context.update({'paper_submitted': paper})
+#     return render(request, 'pcm_dashboard.html', context)
 
 
 

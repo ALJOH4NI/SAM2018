@@ -85,9 +85,22 @@ section {
 </div>
 
 
+
 <br>
 <br>
 <br>
+    <form name="FavoritePapers" method="post">
+            {% csrf_token %}
+            <div>
+                <p><h4> Select the papers you wish to review: </h4></p>
+
+                {% for item in papers %}
+                <input type="checkbox" name="paper_id" value={{ item.id }}> {{item.title}} || Submitted by: {{item.user.first_name}} <br>
+                {% endfor %}
+            </div>
+<br><br>
+            <input type="submit" class="btn btn-success" value="Favorite Papers">
+    </form>
 
 
 </div> <!-- container -->
