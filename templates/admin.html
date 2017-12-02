@@ -19,7 +19,6 @@
   <div id="content">
     <section class="sidebar">
       <!-- This adds a sidebar with 1 searchbox,2 menusets, each with 4 links -->
-      <input type="text"  id="search" value="search">
       <div id="menubar">
         <nav class="menu">
           <h2><!-- Title for menuset 1 -->Admin Actions </h2>
@@ -30,7 +29,7 @@
             <li><a href="userMangament" title="Link">Manage Users</a></li>
             <li><a href="deadlines" title="Link">Manage Deadlines</a></li>
             <li><a href="notifications" title="Link">Manage Notifications Template</a></li>
-			<li><a href="templates" title="Link">Manage Review  Templates</a></li>
+{#			<li><a href="templates" title="Link">Manage Review  Templates</a></li>#}
           </ul>
         </nav>
 
@@ -94,9 +93,9 @@
 
                           <table>
                             <tr>
-                                 <th>User Name -</th>
-                            <th>Fist Name -</th>
-                            <th>Last Name -</th>
+                                <th>User Name </th>
+                            <th>Fist Name </th>
+                            <th>Last Name </th>
                             <th> Role</th>
                                 <th> Selection</th>
                             </tr>
@@ -213,31 +212,52 @@
 
 
         {% endif %}
-      {% if notifications %}
+      {% if notificationsTemp %}
 
 		<h3>Manage Notifications Template</h3>
 				<hr>
 		        <ul>
 					<br>
       <div class="productRow">
-        <article class="productInfo"> <!-- Each individual product description -->
-          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
-          <p class="price">$50</p>
-          <p class="productContent">Content holder</p>
-          <input type="button" name="button" value="Buy" class="buyButton">
-        </article>
-        <article class="productInfo"><!-- Each individual product description -->
-          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
-          <p class="price">$50</p>
-          <p class="productContent">Content holder</p>
-          <input type="button" name="button" value="Buy" class="buyButton">
-        </article>
-        <article class="productInfo"><!-- Each individual product description -->
-          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
-          <p class="price">$50</p>
-          <p class="productContent">Content holder</p>
-          <input type="button" name="button" value="Buy" class="buyButton">
-        </article>
+
+
+          {% if selected %}
+                        <h3>set up the   notifications temp </h3>
+                       <form method="get" action="/updateNT">
+                          {% csrf_token %}
+                            <p>{{selected.nameID}}</p>
+                         <input type="hidden" name ="pk" value="{{selected.nameID}}" >
+                          message:<br>
+                          <input type="text"  name="date" value="{{selected.text}}">
+                          <br>
+
+                           <button type="submit"  value="submit">submit</button>
+
+                          </form>
+
+          {% endif  %}
+                       {% if  not selected %}
+                           <table>
+                      <tr>
+                            <th>notifications ID </th>
+                            <th>message  </th>
+                                <th> Selection</th>
+                            </tr>
+                           {% for x in notificationsTemp %}
+               <tr>
+              <td>{{ x.nameID}}</td>
+              <td>{{ x.text}}</td>
+              <td><a href="notificationsTemp?selected={{x.nameID}}">select</a></td>
+              </tr>
+
+
+             {% endfor %}
+
+                           </table>
+
+                        {% endif  %}
+
+
       </div>
 
 

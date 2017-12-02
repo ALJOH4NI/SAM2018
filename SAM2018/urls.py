@@ -22,5 +22,6 @@ urlpatterns = [
                             url(r'^upadtaUser', cPanel.updateUser),
                              url(r'^deleteUser', cPanel.deleteUser),
                              url(r'^addNewUser', cPanel.addNewUser),
-                            url(r'^configsDeadLine', cPanel.configsDeadLine)
+                            url(r'^configsDeadLine', cPanel.configsDeadLine),
+                            url(r'^updateNT', cPanel.updateNT)
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

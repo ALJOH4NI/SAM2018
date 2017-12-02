@@ -47,3 +47,10 @@ class Deadline(models.Model):
     date = models.CharField(max_length=60, null=True)
     createdAt = models.DateTimeField(auto_now=False, auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=False, auto_now_add=True)
+
+
+class NotifcationTemp(models.Model):
+    nameID = models.CharField(max_length=60, null=True)
+    text = models.CharField(max_length=500, null=True)
+    createdAt = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now=False, auto_now_add=True)
