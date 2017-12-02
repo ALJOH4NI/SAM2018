@@ -47,25 +47,20 @@ section {
         <a class="nav navbar-brand"  href="{% url 'logout' %}">Logout</a>
     </div>
 </nav>
-<h1> List of Reviewed Papers </h1>
+<h1> List of Reports </h1>
 
     <div style="margin: 50px;">
-        <form name="generate_report" method="post">
-        {% csrf_token %}
-        {% for item in paper_reviews %}
+        {% for item in reports %}
         <div class="panel-group">
             <div class="panel panel-default">
-                <div class="panel-heading">Paper Name: {{item.paper.title}}</div>
+                <div class="panel-heading">Paper Name: {{item.paper.title}} <br> Paper Authors: {{item.paper.authorName}}</div>
                 <div class="panel-body">
-                {% for reviewItem in item.reviews %}
                     <p>
-                        Reviewed by: {{reviewItem.pcm.first_name}} {{reviewItem.pcm.last_name}} <br>
-                        Comment: {{reviewItem.comment}} <br>
-                        Rating: {{reviewItem.rate}} / 5 <br>
+                        <b>Comment: </b> {{item.comments}} <br>
                     </p>
-                {% endfor %}
-                    <a href="{% url 'generate_report' item.paper.id %}" class="btn btn-primary" role="button">Generate Report</a>
-
+                    <p>
+                        <b>Rating :</b> {{item.rate}} / 5 <br>
+                    </p>
                 </div>
             </div>
         </div>
