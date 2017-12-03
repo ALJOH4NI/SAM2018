@@ -38,8 +38,12 @@
           <div>
           <p>Title: {{paper.title}}</p>
           <p>Author: {{paper.user.username}}</p>
+              {% if role == 'PCM' %}
+
           <p>Uplaod: {{paper.date}}</p>
           <p>Download: <a href="{{paper.uplaod.url}}" target='_blank'>download</a>
+              {% endif %}
+
         </div>
 
           <hr>

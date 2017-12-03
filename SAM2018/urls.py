@@ -24,9 +24,8 @@ urlpatterns = [
                              url(r'^deleteUser', cPanel.deleteUser),
                              url(r'^addNewUser', cPanel.addNewUser),
                             url(r'^configsDeadLine', cPanel.configsDeadLine),
-<<<<<<< HEAD
-                            url(r'^paperUploaded', views.index)
-=======
-                            url(r'^updateNT', cPanel.updateNT)
->>>>>>> d864f4c3a5f2acc1f1891500efb295b7f4e79f05
+                            url(r'^paperUploaded', views.index),
+                            url(r'^updateNT', cPanel.updateNT),
+                         url(r'^FavoritePapers', views.index),
+                         url(r'^reviewPaper', views.reviewPaper)
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

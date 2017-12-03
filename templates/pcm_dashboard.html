@@ -32,6 +32,7 @@ section {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 </head>
 <body>
 
@@ -42,15 +43,19 @@ section {
 <nav class="navbar navbar-inverse">
     <div calss="navbar-header">
             <a class="navbar-brand"  href="{% url 'index' %}">SAM2018</a>
+            <a class="navbar-brand"  href="?SubmitPaper=true">Submit a paper</a>
+
             <a class="nav navbar-brand "  href="{% url 'logout' %}">Logout</a>
     </div>
 </nav>
+    {% if SubmitPaper %}
 
     <div class="container">
 
         <h3>Welcome, {{user.first_name}}!</h3>
         <p>Your role is {{groups}}</p>
         <hr style="border:1px solid black">
+
 
     {% csrf_token %}
     <form class="form-horizontal" method="post" enctype="multipart/form-data">
@@ -83,19 +88,22 @@ section {
   <p3>Your deadline to submit a paper is <i>{{deadline.date}}</i></p3>
 
 </div>
+        {% endif %}
 
+
+        {% if not SubmitPaper %}
 
 
 <br>
 <br>
 <br>
-    <form name="FavoritePapers" method="post">
+    <form name="FavoritePapers" method="post" action="/FavoritePapers">
             {% csrf_token %}
             <div>
                 <p><h4> Select the papers you wish to review: </h4></p>
 
                 {% for item in papers %}
-                <input type="checkbox" name="paper_id" value={{ item.id }}> {{item.title}} || Submitted by: {{item.user.first_name}} <br>
+                <input type="checkbox" name="paper_id" value={{item.id}}> {{item.id}} || Submitted by: {{item.user.first_name}} <br>
                 {% endfor %}
             </div>
 <br><br>
@@ -110,19 +118,34 @@ section {
     <hr style="border:1px solid black">
 
 
-            <h2>Active Item in a List Group</h2>
-            {% for n in reviews %}
-               <div class="list-group">
-                     <input type="checkbox" name="PAPER" value={{ n.paper.id }}> <a href="{% url 'view_paper_url' n.paper.id  %}">{{n.paper.title}} || The Author: {{n.paper.user.first_name}}</a><br>
-                </div>
+<div class="row">
+  <div class="col-sm-6">
+     {% for n in reviews %}
+                <div class="card">
+                    <div class="card-header">
+                        <a href="{% url 'view_paper_url' n.paper.id  %}"> {{n.paper.title}}</a>
+                         </div>
+              <div class="card-block">
+                <h4 class="card-title"> The Author: {{n.paper.user.first_name}}</h4>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="/reviewPaper?id={{ n.paper.id  }}" class="btn btn-primary">Review</a>
+              </div>
+            </div>
+{#               <div class="list-group">#}
+{#                   <a href="{% url 'view_paper_url' n.paper.id  %}">{{n.paper.title}} || The Author: {{n.paper.user.first_name}}</a> <a href="/reviewPaper?id={{ n.paper.id  }}">Review</a>#}
+{#                   <br>#}
+{#                </div>#}
             {% endfor %}
+    </div>
+  </div>
+
 
         <br>
         <br>
         <br>
 
 </div> <!-- container -->
-
+{% endif %}
 <div class="footer">This footer will always be positioned at the bottom of the page, but <strong>not fixed</strong>.</div>
 {% endif %} <!-- if the user is author -->
 {% endif %}  <!-- if user is_authenticated -->

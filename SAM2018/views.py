@@ -6,11 +6,8 @@ from .forms import Signupform, UplaodFile
 from django.contrib.auth import logout, authenticate, login, update_session_auth_hash
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.models import Group
-<<<<<<< HEAD
-from .models import Paper, Notifcation, Deadlines, Review, Deadline
-=======
-from .models import Paper, Notifcation, Deadlines, Review, Report
->>>>>>> d864f4c3a5f2acc1f1891500efb295b7f4e79f05
+
+from .models import Paper, Notifcation, Deadlines, Review, Report, Deadline, favoritePaper
 from django.contrib.auth.models import User
 from .forms import AssignForm, DeadlineForm
 from django.contrib import messages
@@ -45,16 +42,19 @@ def index(request):
                 messages.success(request, 'The paper has been assign successfully!')
 
             reviews = Review.objects.all()
+            pcm_users = User.objects.filter(groups__name='PCM')
             papers = Paper.objects.all().exclude(id__in=[x.paper.id for x in reviews])
             context.update({'papers': papers,
-                            'evaluators': pcm_users})
+                            'evaluators': pcm_users ,'favoritePaper': favoritePaper.objects.all()})
             context.update({'is_pcc': 'is_pcc'})
             notification = Notifcation.objects.filter(read=False)
             num_notification = len(notification)
-            context.update({'groups': request.user.groups.all().first(), 'NumNotifications': num_notification,
-                            'notification': notification})
             num_papers = len(papers)
             context.update({'groups': request.user.groups.all().first(),
+                            'NumNotifications': num_notification,
+                            'notification': notification,
+                            'paper_count': num_papers
+                            })
 
             return render(request, 'pcc_dashboard_index.html', context)
 
@@ -110,15 +110,31 @@ def index(request):
         elif request.user.groups.filter(name__in=['PCM']).exists():
             paper = Paper.objects.filter(user=request.user)
             deadline = Deadlines.objects.filter(group='PCM').first()
-            reviews = Review.objects.filter(pcm=request.user)
+            reviews = Review.objects.filter(pcm=request.user).filter(rate__isnull=True)
 
             context.update({'is_pcm': 'is_pcm'})
             context.update({'deadline': deadline})
             context.update({'reviews': reviews})
-            context.update({'paper': paper})
+            context.update({'papers': Paper.objects.all()})
+            context.update({'selectedPaper': favoritePaper.objects.all().filter(pcm=request.user)})
+
+            if request.GET.get('SubmitPaper'):
+                context.update({"SubmitPaper" : "true"})
+
+
+
 
             form = UplaodFile(request.POST, request.FILES)
             if request.method == "POST":
+
+
+                if request.POST['paper_id']:
+                    for item in request.POST.getlist('paper_id'):
+                        paper = Paper.objects.all().filter(pk=item).first()
+                        pcm = request.user
+                        favoritePaper(pcm=pcm, papers=paper).save()
+
+
                 form = UplaodFile(request.POST, request.FILES)
                 if form.is_valid():
                     newpaper = Paper(uplaod=request.FILES['uplaod'], title=request.POST['title'], version="1",
@@ -132,6 +148,7 @@ def index(request):
                 form = UplaodFile()
             context.update({'groups': request.user.groups.all().first(), 'form': form})
             return render(request, 'pcm_dashboard.html', context)
+
     return render(request, 'login.html', context)
 #
 # def view_submitted_papers(request):
@@ -147,12 +164,17 @@ def index(request):
 def view_paper(request, id):
     context = {}
     if request.user.is_authenticated():
+        paper = Paper.objects.filter(id=id).first()
+        context.update({'paper': paper})
+
         if request.user.groups.filter(name__in=['PCC']).exists():
-            paper = Paper.objects.filter(id=id).first()
-            context.update({'paper': paper})
             notification = Notifcation.objects.filter(paper=paper).first()
             notification.read = True
             notification.save()
+            context.update({'role': 'PCC'})
+        elif request.user.groups.filter(name__in=['PCM']).exists():
+             context.update({'role': 'PCM'})
+
     return render(request, 'view_paper.html', context)
 
 
@@ -217,6 +239,7 @@ def signup(request):
         return HttpResponseRedirect('/')
     else:
             if request.method == 'POST':
+
                 # create a form instance and populate it with data from the request:
                 form = Signupform(request.POST) # the form with data and chech if the form is valid
                 context.update({'form':form})
@@ -234,3 +257,18 @@ def signup(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+
+def reviewPaper(request):
+    context = {}
+    id = request.GET.get('id')
+
+    if request.method == 'POST':
+        paper = Paper.objects.filter(id=request.POST["id"]).first()
+        rating = request.POST["rating"]
+        comment = request.POST["comment"]
+        Review.objects.all().filter(paper=paper).update(comment=comment, rate=rating)
+        return redirect("/")
+    if id:
+       context = {"paper":Paper.objects.all().filter(pk=id).first()}
+    return render(request, 'pcm_review_papers.html', context)

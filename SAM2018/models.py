@@ -14,6 +14,8 @@ class Paper(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 
+
+
 class Report(models.Model):
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
     comments = models.CharField(max_length=500, null=True)
@@ -55,3 +57,7 @@ class NotifcationTemp(models.Model):
     text = models.CharField(max_length=500, null=True)
     createdAt = models.DateTimeField(auto_now=False, auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=False, auto_now_add=True)
+
+class favoritePaper(models.Model):
+    pcm = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    papers = models.ForeignKey(Paper, null=True)

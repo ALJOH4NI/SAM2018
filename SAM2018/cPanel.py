@@ -118,7 +118,7 @@ def updateUser(request):
      userName = request.GET.get('userName')
      password = request.GET.get('password')
      User.objects.all().filter(username=userName).update(first_name =firstname,
-                              last_name = lastname,username=userName,password=password,email=Email)
+                              last_name = lastname,username=userName,email=Email)
      groupName = ''
      user = getUserObject(userName)
 
@@ -145,7 +145,7 @@ def deleteUser(request):
 
 # hadlee  deadlines functionality
 def setUpDeadlines():
-     Deadline(nameID="paper_submission",date="").save()
+     Deadline(nameID="paper_submission",date="2016-12-12").save()
 
 def deadlines(request):
      context = {}

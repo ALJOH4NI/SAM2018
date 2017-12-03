@@ -36,9 +36,3 @@ class DeadlineForm(forms.Form):
         fields = (
             'date','group'
         )
-class FavoritePapersForm(forms.Form):
-    class Meta:
-        model = Paper
-        fields = (
-            'title','authorName'
-        )

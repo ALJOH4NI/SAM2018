@@ -80,6 +80,17 @@ section {
                 <p><h4> Select three evaluators or PCMs:</h4></p>
                 {% for item in evaluators %}
                 <input type="checkbox" name="pcm_list" value={{ item.id }}> {{item.first_name}} {{item.last_name}} <br>
+                    <ul>
+                        <P>Favoriate paper by {{item.first_name}}</P>
+                        {% for f in favoritePaper %}
+                            {% if f.pcm.id == item.id  %}
+                             <li> {{ f.papers.title }}</li>
+
+                            {% endif %}
+                            {% endfor %}
+                    </ul>
+                    <hr>
+
                 {% endfor %}
                 {{evaluators.first_name}}
             </div>
