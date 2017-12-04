@@ -67,6 +67,12 @@ section {
                       }else if (field['PaperTitle']){
                           $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+field['PaperTitle']+"  "+"<a href='#' class='alert-link'>"+field['text']+" </div></b>");
 
+                      }else if (field['AllReviewPaper']) {
+                          $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+field['AllReviewPaper']+"  "+"<a href='#' class='alert-link'>"+field['text']+" </div></b>");
+
+                      }else {
+                          $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+"  "+"<a href='#' class='alert-link'>"+field['text']+" </div></b>");
+
                       }
 
 

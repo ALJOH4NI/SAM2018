@@ -210,6 +210,9 @@ def view_reviewed_papers(request):
                 review_items = Review.objects.filter(paper=paper)
                 for review in review_items:
                     reviews.append(review)
+
+
+
                 if len(review_items) > 0:
                     data.append({'paper': paper, 'reviews': reviews})
 
@@ -286,6 +289,11 @@ def reviewPaper(request):
         notiftemp1 = NotifcationTemp.objects.all().filter(nameID="assigned_paper").first()
         Notifcation.objects.all().filter(user=user, reviewedPaper=Review.objects.all().filter(paper=paper).first().id,
                                    notiftemp=notiftemp1).update(read=True)
+        if len(Review.objects.all().filter(paper=paper)) == 3:
+            message = NotifcationTemp.objects.all().filter(nameID="ThreeReviewCompleted").first()
+            if not Notifcation.objects.all().filter(notiftemp=message).filter(AllReviewPaper=paper.id).first():
+                user = User.objects.filter(groups__name='PCC').first()
+                Notifcation(AllReviewPaper=paper.id, notiftemp=message, user=user).save()
 
         notiftemp = NotifcationTemp.objects.all().filter(nameID="paper_review").first()
         notification = Notifcation(user=user, reviewedPaper= Review.objects.all().filter(paper=paper).first().id, notiftemp=notiftemp)

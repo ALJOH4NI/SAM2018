@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.core import serializers
 
-from SAM2018.models import Notifcation, NotifcationTemp, Review
+from SAM2018.models import Notifcation, NotifcationTemp, Review, Paper
 
 
 def index(request):
@@ -15,6 +15,11 @@ def index(request):
     data = []
 
     for n in Notifcation.objects.all().filter(read=False).filter(user=user).order_by('-timestamp'):
+        if n.AllReviewPaper:
+            paperTitle = Paper.objects.all().filter(id=n.AllReviewPaper).first().title
+            if paperTitle:
+                data.append({"AllReviewPaper":paperTitle, "text": n.notiftemp.text, "id": n.id})
+
         if n.paper_id:
              data.append({"PaperTitle":n.paper.title,"text":n.notiftemp.text,"id":n.id})
         if n.reviewedPaper:

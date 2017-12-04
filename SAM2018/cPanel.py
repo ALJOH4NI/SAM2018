@@ -207,6 +207,7 @@ def setUpNotifcationTemp():
      NotifcationTemp(nameID="account", text="Your account has been change successfully!!").save()
      NotifcationTemp(nameID="paper_review", text="This paper has been reviewed !!").save()
      NotifcationTemp(nameID="assigned_paper", text="You have assigned paper to review").save()
+     NotifcationTemp(nameID="ThreeReviewCompleted", text=" all PCM reviewed this paper, ").save()
 
 
 def setUpTemplates():

@@ -79,4 +79,5 @@ class Notifcation(models.Model):
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     reviewedPaper = models.CharField(max_length=60, null=True)
+    AllReviewPaper = models.CharField(max_length=60, null=True)
     notiftemp = models.ForeignKey(NotifcationTemp, on_delete=models.CASCADE, null=True)
