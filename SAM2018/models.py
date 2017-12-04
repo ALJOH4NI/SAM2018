@@ -62,6 +62,13 @@ class NotifcationTemp(models.Model):
     createdAt = models.DateTimeField(auto_now=False, auto_now_add=True)
     updatedAt = models.DateTimeField(auto_now=False, auto_now_add=True)
 
+class Template(models.Model):
+    nameID = models.CharField(max_length=60, null=True)
+    text = models.CharField(max_length=10000, null=True)
+    createdAt = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now=False, auto_now_add=True)
+
+
 class favoritePaper(models.Model):
     pcm = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     papers = models.ForeignKey(Paper, null=True)

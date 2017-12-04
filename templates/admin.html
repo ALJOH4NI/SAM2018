@@ -5,8 +5,11 @@
 <title> Admin dashboard </title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="media/styles/eCommerceStyle.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
 <script>var __adobewebfontsappname__="dreamweaver"</script><script src="http://use.edgefonts.net/montserrat:n4:default;source-sans-pro:n2:default.js" type="text/javascript"></script>
 </head>
+{% if user.is_authenticated %}
 
 <body>
 <div id="mainWrapper">
@@ -29,7 +32,9 @@
             <li><a href="userMangament" title="Link">Manage Users</a></li>
             <li><a href="deadlines" title="Link">Manage Deadlines</a></li>
             <li><a href="notifications" title="Link">Manage Notifications Template</a></li>
-{#			<li><a href="templates" title="Link">Manage Review  Templates</a></li>#}
+			<li><a href="templates" title="Link">Manage Templates</a></li>
+              <li><a href="adminNot" title="Link">ALL</a></li>
+
           </ul>
         </nav>
 
@@ -38,7 +43,34 @@
 
 {# userMangament section  statrt  #}
     <section class="mainContent">
-{% include "notification.html" %}
+        {% if all %}
+
+            {% for it in all %}
+                <div class="card text-center">
+                      <div class="card-body">
+                        <h4 class="card-title">{{ it.user.first_name }}</h4>
+                        <p class="card-text">{{ it.notiftemp.text }}</p>
+                         <p class="card-text">{{ it.paper.title }}</p>
+
+                          {% for r in reviews %}
+
+                              {% if r.id == it.reviewedPaper %}
+                              <p class="card-text">{{ r.id }}</p>
+
+                              {% endif %}
+
+                          {% endfor %}
+
+
+                        <a href="#" class="btn btn-primary"> {{ it.reviewedPaper }}</a>
+                  </div>
+                    </div>
+                <br>
+                <br>
+            {% endfor %}
+            {% endif %}
+
+
     {% if userMangament %}
 
 		     <h3>Manage Users</h3><hr><ul>
@@ -265,39 +297,65 @@
 
       {% if templates %}
 
-		<h3>Manage Review  Templates</h3>
+		<h3>Manage  Templates</h3>
 				<hr>
 		        <ul>
 					<br>
       <div class="productRow">
-        <article class="productInfo"> <!-- Each individual product description -->
-          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
-          <p class="price">$50</p>
-          <p class="productContent">Content holder</p>
-          <input type="button" name="button" value="Buy" class="buyButton">
-        </article>
-        <article class="productInfo"><!-- Each individual product description -->
-          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
-          <p class="price">$50</p>
-          <p class="productContent">Content holder</p>
-          <input type="button" name="button" value="Buy" class="buyButton">
-        </article>
-        <article class="productInfo"><!-- Each individual product description -->
-          <div><img alt="sample" src="eCommerceAssets/images/200x200.png"></div>
-          <p class="price">$50</p>
-          <p class="productContent">Content holder</p>
-          <input type="button" name="button" value="Buy" class="buyButton">
-        </article>
+  {% if selected %}
+                        <h3>set up the  temp </h3>
+                       <form method="get" action="/updateTemplates">
+                          {% csrf_token %}
+                            <p>{{selected.nameID}}</p>
+                         <input type="hidden" name ="pk" value="{{selected.nameID}}" >
+                          Format:<br>
+<textarea name="date"  rows="10" cols="70">
+    {{selected.text}}
+                           </textarea>
+                          <br>
+
+                           <button type="submit"  value="submit">submit</button>
+
+                          </form>
+
+          {% endif  %}
+                       {% if  not selected %}
+                           <table>
+                      <tr>
+                            <th>Template Name  </th>
+                            <th>Format  </th>
+                                <th> Selection</th>
+                            </tr>
+                           {% for x in templates %}
+               <tr>
+              <td>{{ x.nameID}}</td>
+              <td> <textarea name="date"  rows="10" cols="70">
+                                    {{x.text}}
+                           </textarea></td>
+              <td><a href="templates?selected={{x.nameID}}">select</a></td>
+              </tr>
+
+
+             {% endfor %}
+
+                           </table>
+
+                        {% endif  %}
+
       </div>
+
+
                             {% endif %}
 
                 </ul>
                 </ul>
                 </ul>
         </ul>
+        </ul>
     </section>
   </div>
 
 </div>
 </body>
+{% endif %}
 </html>

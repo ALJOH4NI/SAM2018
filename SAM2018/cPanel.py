@@ -2,14 +2,11 @@ from __future__ import print_function
 import sys
 from pickle import GET
 
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
 from django.template.context_processors import csrf, request
-from django.shortcuts import render_to_response
 
-from SAM2018 import observable
-from SAM2018.models import Deadline, NotifcationTemp
+from SAM2018.models import Deadline, NotifcationTemp, Template, Review
 from SAM2018.observable import Observable
 from SAM2018.observer import Observer
 from SAM2018.user import user, Role
@@ -203,11 +200,6 @@ def configsDeadLine(request):
      return render(request, 'admin.html', context)
 # hadlee  templates  functionality
 
-def templates(request):
-     context = {}
-
-     context.update({'templates': "yes"})
-     return render(request, 'admin.html', context)
 
 # hadlee  notifications  functionality
 def setUpNotifcationTemp():
@@ -215,6 +207,11 @@ def setUpNotifcationTemp():
      NotifcationTemp(nameID="account", text="Your account has been change successfully!!").save()
      NotifcationTemp(nameID="paper_review", text="This paper has been reviewed !!").save()
      NotifcationTemp(nameID="assigned_paper", text="You have assigned paper to review").save()
+
+
+def setUpTemplates():
+     Template(nameID="Review", text="I evaluated the paper and certify that it represents original and valid work. The organization of the paper is _The plan to conduct research and plan to analyze are___ Thereby, I consider this paper___ My final rating is___").save()
+     Template(nameID="Report", text="I evaluated the paper and certify that it represents original and valid work. The organization of the paper is _The plan to conduct research and plan to analyze are___ Thereby, I consider this paper___ My final rating is___").save()
 
 
 def notifications(request):
@@ -245,5 +242,41 @@ def updateNT(request):
      context.update({'notificationsTemp': NotifcationTemp.objects.all()})
 
      NotifcationTemp.objects.all().filter(nameID=id).update(text=date)
+
+     return render(request, 'admin.html', context)
+
+
+def templates(request):
+     context = {}
+     selected = request.GET.get('selected')
+     if selected:
+          selected = selected.strip()
+          context.update({'selected': Template.objects.all().filter(nameID=selected).first()})
+
+     if len(Template.objects.all()) == 0:
+          setUpTemplates()
+
+     # NotifcationTemp
+     context.update({'templates': Template.objects.all()})
+
+     return render(request, 'admin.html', context)
+
+
+def updateTemplates(request):
+     id = request.GET.get('pk')
+     date = request.GET.get('date')
+     context = {}
+     context.update({'templates': Template.objects.all()})
+
+     Template.objects.all().filter(nameID=id).update(text=date)
+
+     return render(request, 'admin.html', context)
+
+
+def adminNot(request):
+
+     context = {}
+     context.update({'all':  Notifcation.objects.all()})
+     context.update({'reviews':  Review.objects.all()})
 
      return render(request, 'admin.html', context)

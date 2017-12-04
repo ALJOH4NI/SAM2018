@@ -10,7 +10,7 @@ from django.contrib.auth import logout, authenticate, login, update_session_auth
 from django.http import HttpResponse, HttpResponseRedirect, Http404, request
 from django.contrib.auth.models import Group
 
-from .models import Paper, Notifcation, Deadlines, Review, Report, Deadline, favoritePaper, NotifcationTemp
+from .models import Paper, Notifcation, Deadlines, Review, Report, Deadline, favoritePaper, NotifcationTemp,Template
 from django.contrib.auth.models import User
 from .forms import AssignForm, DeadlineForm
 from django.contrib import messages
@@ -39,7 +39,6 @@ def index(request):
     elif request.user.is_authenticated():  # PCC, Author and PCM
         if request.user.groups.filter(name__in=['PCC']).exists():
             if request.method == 'POST':
-                print ("sdsdsdsdsd hsdusgdjs ")
                 paper_id = request.POST["paper_id"]
                 pcms = request.POST.getlist('pcm_list')
                 paper = Paper.objects.filter(id=paper_id).first()
@@ -72,17 +71,9 @@ def index(request):
 
         # Admin login
         elif request.user.is_staff:
-            form = DeadlineForm(request.POST)
-            if request.method == 'POST':
 
-                if form.is_valid():
-                    deadline = Deadlines(date=request.POST['date'], group=request.POST['group'])
-                    deadline.save()
-                else:
-                    form = DeadlineForm()
 
-            context.update({'form': form})
-            return render(request, 'admin_dhasboard.html', context)
+            return HttpResponseRedirect("cpanel")
 
         elif request.user.groups.filter(name__in=['Author']).exists():
             paper_submissionData = Deadline.objects.all().filter(nameID='paper_submission').first().date
@@ -249,6 +240,8 @@ def generate_report(request, paper_id):
                 reviews.append(review)
 
             context.update({'paper': paper, 'reviews': reviews})
+            context.update({'ReportTemp': Template.objects.all().filter(nameID="Report").first()})
+
 
     return render(request, 'generate_report.html', context)
 
@@ -284,17 +277,22 @@ def logout_view(request):
 def reviewPaper(request):
     context = {}
     id = request.GET.get('id')
-    print (id)
     if request.method == 'POST':
         paper = Paper.objects.filter(pk=request.POST["id"]).first()
         rating = request.POST["rating"]
         comment = request.POST["comment"]
         Review.objects.all().filter(paper=paper).update(comment=comment, rate=rating)
         user = User.objects.filter(groups__name='PCC').first()
+        notiftemp1 = NotifcationTemp.objects.all().filter(nameID="assigned_paper").first()
+        Notifcation.objects.all().filter(user=user, reviewedPaper=Review.objects.all().filter(paper=paper).first().id,
+                                   notiftemp=notiftemp1).update(read=True)
+
         notiftemp = NotifcationTemp.objects.all().filter(nameID="paper_review").first()
         notification = Notifcation(user=user, reviewedPaper= Review.objects.all().filter(paper=paper).first().id, notiftemp=notiftemp)
         notification.save()
         return redirect("/")
     if id:
        context = {"paper":Paper.objects.all().filter(pk=id).first()}
+       context.update({'ReviewTemp': Template.objects.all().filter(nameID="Review").first()})
+
     return render(request, 'pcm_review_papers.html', context)
