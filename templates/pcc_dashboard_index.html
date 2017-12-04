@@ -37,12 +37,6 @@ section {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<<<<<<< HEAD
-
-
-</head>
-<body>
-=======
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 </head>
@@ -108,19 +102,6 @@ section {
         <div id="not">
 
         </div>
-        {% if paper_count > 0 %}
-        <div>
-            {% if NumNotifications > 0 %}
-            <div class="alert alert-success" role="alert">
-                <p>You have {{NumNotifications}} new Papers to assign!</p>
-                {% for n in notification %}
-                <ul>
-                    <li><a href="{% url 'view_paper_url' n.paper.id  %}">{{n.paper.title}} || The Author: {{n.paper.user.first_name}}</a></li>
-                </ul>
-                {% endfor %}
-            </div>
-            {% else %}
->>>>>>> b6220ecf5aeb1c103088aa29944cb848a33a4b6d
 
         <nav class="navbar navbar-default">
           <div class="container-fluid">

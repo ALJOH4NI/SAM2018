@@ -1,13 +1,6 @@
-<<<<<<< HEAD
 from django.shortcuts import render
 from django.template.loader import render_to_string
 
-
-def setUp(data):
-
-    return  render_to_string( 'notification.html', data)
-
-=======
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.core import serializers
@@ -36,4 +29,3 @@ def index(request):
 
 
     return JsonResponse({"data":data})
->>>>>>> b6220ecf5aeb1c103088aa29944cb848a33a4b6d

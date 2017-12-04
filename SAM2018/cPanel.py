@@ -7,7 +7,6 @@ from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
 from django.template.context_processors import csrf, request
 from django.shortcuts import render_to_response
-<<<<<<< HEAD
 
 from SAM2018 import observable
 from SAM2018.models import Deadline, NotifcationTemp
@@ -21,7 +20,6 @@ class controlPanel(Observer):
           print ("update controlPanel")
           redirect("/")
 
-=======
 from SAM2018.models import Deadline, NotifcationTemp, Notifcation
 from SAM2018.user import user, Role
 
@@ -30,7 +28,6 @@ def sendNotifcation(user):
      notiftemp = NotifcationTemp.objects.all().filter(nameID="account").first()
      notification = Notifcation(user=user, notiftemp=notiftemp)
      notification.save()
->>>>>>> b6220ecf5aeb1c103088aa29944cb848a33a4b6d
 
 def admin(request):
      context = {}
