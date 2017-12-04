@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d9a54672-9767-487e-9238-fc856e3807ef" name="Default" comment="View reviewed papers, generate report.">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SAM2018/cPanel.py" afterPath="$PROJECT_DIR$/SAM2018/cPanel.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SAM2018/notification.py" afterPath="$PROJECT_DIR$/SAM2018/notification.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SAM2018/views.py" afterPath="$PROJECT_DIR$/SAM2018/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/author_dashboard.html" afterPath="$PROJECT_DIR$/templates/author_dashboard.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pcc_dashboard_index.html" afterPath="$PROJECT_DIR$/templates/pcc_dashboard_index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pcm_review_papers.html" afterPath="$PROJECT_DIR$/templates/pcm_review_papers.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,10 +23,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SAM2018/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
+            <state relative-caret-position="-2576">
               <caret line="46" column="28" lean-forward="false" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="28" />
               <folding />
             </state>
@@ -42,8 +36,8 @@
       <file leaf-file-name="pcc_dashboard_index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/pcc_dashboard_index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-464">
-              <caret line="64" column="144" lean-forward="false" selection-start-line="64" selection-start-column="144" selection-end-line="64" selection-end-column="144" />
+            <state relative-caret-position="1287">
+              <caret line="138" column="47" lean-forward="false" selection-start-line="138" selection-start-column="47" selection-end-line="138" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -61,34 +55,34 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SAM2018/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="41" column="60" lean-forward="false" selection-start-line="41" selection-start-column="60" selection-end-line="41" selection-end-column="60" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="pcm_dashboard.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/pcm_dashboard.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="405">
-              <caret line="74" column="0" lean-forward="true" selection-start-line="42" selection-start-column="2" selection-end-line="74" selection-end-column="0" />
+              <caret line="74" column="0" lean-forward="false" selection-start-line="42" selection-start-column="2" selection-end-line="74" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="notification.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="notification.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/SAM2018/notification.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="21" column="138" lean-forward="false" selection-start-line="21" selection-start-column="138" selection-end-line="21" selection-end-column="138" />
+            <state relative-caret-position="153">
+              <caret line="16" column="87" lean-forward="false" selection-start-line="16" selection-start-column="87" selection-end-line="16" selection-end-column="87" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="query.py" pinned="false" current-in-tab="false">
+        <entry file="file:///Library/Python/2.7/site-packages/django/db/models/sql/query.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="172">
+              <caret line="1671" column="0" lean-forward="false" selection-start-line="1671" selection-start-column="0" selection-end-line="1671" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -103,11 +97,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SAM2018/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="382">
+              <caret line="71" column="13" lean-forward="false" selection-start-line="71" selection-start-column="4" selection-end-line="71" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="author_dashboard.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/author_dashboard.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="389">
-              <caret line="140" column="0" lean-forward="true" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
+              <caret line="140" column="0" lean-forward="false" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -117,7 +121,7 @@
         <entry file="file://$PROJECT_DIR$/templates/pcm_review_papers.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="145">
-              <caret line="55" column="0" lean-forward="true" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+              <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -197,11 +201,11 @@
         <option value="$PROJECT_DIR$/SAM2018/urls.py" />
         <option value="$PROJECT_DIR$/templates/pcm_review_papers.html" />
         <option value="$PROJECT_DIR$/templates/pcm_dashboard.html" />
-        <option value="$PROJECT_DIR$/SAM2018/notification.py" />
-        <option value="$PROJECT_DIR$/templates/pcc_dashboard_index.html" />
         <option value="$PROJECT_DIR$/SAM2018/cPanel.py" />
         <option value="$PROJECT_DIR$/templates/author_dashboard.html" />
         <option value="$PROJECT_DIR$/SAM2018/views.py" />
+        <option value="$PROJECT_DIR$/templates/pcc_dashboard_index.html" />
+        <option value="$PROJECT_DIR$/SAM2018/notification.py" />
       </list>
     </option>
   </component>
@@ -688,13 +692,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/SAM2018/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="22" lean-forward="false" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SAM2018/admin.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -869,14 +866,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SAM2018/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="31" column="8" lean-forward="false" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/view_reviewed_papers.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-5">
@@ -943,7 +932,7 @@
     <entry file="file://$PROJECT_DIR$/templates/pcm_dashboard.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
-          <caret line="74" column="0" lean-forward="true" selection-start-line="42" selection-start-column="2" selection-end-line="74" selection-end-column="0" />
+          <caret line="74" column="0" lean-forward="false" selection-start-line="42" selection-start-column="2" selection-end-line="74" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -959,7 +948,7 @@
     <entry file="file://$PROJECT_DIR$/templates/pcm_review_papers.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="145">
-          <caret line="55" column="0" lean-forward="true" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+          <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -967,18 +956,8 @@
     <entry file="file://$PROJECT_DIR$/templates/author_dashboard.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="389">
-          <caret line="140" column="0" lean-forward="true" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
+          <caret line="140" column="0" lean-forward="false" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SAM2018/notification.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="21" column="138" lean-forward="false" selection-start-line="21" selection-start-column="138" selection-end-line="21" selection-end-column="138" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -992,19 +971,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/pcc_dashboard_index.html">
+    <entry file="file://$PROJECT_DIR$/SAM2018/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-464">
-          <caret line="64" column="144" lean-forward="false" selection-start-line="64" selection-start-column="144" selection-end-line="64" selection-end-column="144" />
+        <state relative-caret-position="-2576">
+          <caret line="46" column="28" lean-forward="false" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SAM2018/views.py">
+    <entry file="file://$PROJECT_DIR$/templates/pcc_dashboard_index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="46" column="28" lean-forward="false" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="28" />
+        <state relative-caret-position="1287">
+          <caret line="138" column="47" lean-forward="false" selection-start-line="138" selection-start-column="47" selection-end-line="138" selection-end-column="47" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Python/2.7/site-packages/django/db/models/sql/query.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="1671" column="0" lean-forward="false" selection-start-line="1671" selection-start-column="0" selection-end-line="1671" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SAM2018/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="382">
+          <caret line="71" column="13" lean-forward="false" selection-start-line="71" selection-start-column="4" selection-end-line="71" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SAM2018/notification.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="16" column="87" lean-forward="false" selection-start-line="16" selection-start-column="87" selection-end-line="16" selection-end-column="87" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

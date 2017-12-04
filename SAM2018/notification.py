@@ -14,7 +14,7 @@ def index(request):
     user = User.objects.all().filter(username=username).first()
     data = []
 
-    for n in Notifcation.objects.all().filter(read=False).filter(user=user):
+    for n in Notifcation.objects.all().filter(read=False).filter(user=user).order_by('-timestamp'):
         if n.paper_id:
              data.append({"PaperTitle":n.paper.title,"text":n.notiftemp.text,"id":n.id})
         if n.reviewedPaper:
@@ -24,6 +24,6 @@ def index(request):
             data.append({"isRead":n.read,"text":n.notiftemp.text,"id":n.id})
 
 
-    print data
+    # print data
 
     return JsonResponse({"data":data})
