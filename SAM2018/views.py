@@ -1,5 +1,4 @@
 import sys
-
 from django.db.models import Count
 from django.shortcuts import render, render_to_response, redirect
 from .forms import Signupform, UplaodFile
@@ -7,7 +6,7 @@ from django.contrib.auth import logout, authenticate, login, update_session_auth
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.models import Group
 
-from .models import Paper, Notifcation, Deadlines, Review, Report, Deadline, favoritePaper
+from .models import Paper, Notifcation, Deadlines, Review, Report, Deadline, favoritePaper, NotifcationTemp
 from django.contrib.auth.models import User
 from .forms import AssignForm, DeadlineForm
 from django.contrib import messages
@@ -47,7 +46,10 @@ def index(request):
             context.update({'papers': papers,
                             'evaluators': pcm_users ,'favoritePaper': favoritePaper.objects.all()})
             context.update({'is_pcc': 'is_pcc'})
-            notification = Notifcation.objects.filter(read=False)
+            context.update({'userData': request.user})
+            context.update({'role': 'PCC'})
+
+            notification = Notifcation.objects.filter(read=False).filter(paper__isnull=False)
             num_notification = len(notification)
             num_papers = len(papers)
             context.update({'groups': request.user.groups.all().first(),
@@ -78,6 +80,8 @@ def index(request):
             objectDatetime = datetime.datetime.strptime(paper_submissionData, "%Y-%m-%d")
             paper = Paper.objects.filter(user=request.user)
             context.update({'paper': paper})
+            context.update({'userData': request.user})
+
             context.update({'is_author': 'is_author'})
             context.update({'groups': request.user.groups.all().first()})
 
@@ -94,7 +98,8 @@ def index(request):
                                          user=request.user)
                         newpaper.save()
                         user = User.objects.filter(groups__name='PCC').first()
-                        notification = Notifcation(user=user, paper=newpaper)
+                        notiftemp = NotifcationTemp.objects.all().filter(nameID="paper_submission").first()
+                        notification = Notifcation(user=user, paper=newpaper,notiftemp=notiftemp)
                         notification.save()
                         context.update({'uploaded': 'uploaded'})
                         return redirect('/?paperUploaded="true"')
@@ -116,6 +121,8 @@ def index(request):
             context.update({'deadline': deadline})
             context.update({'reviews': reviews})
             context.update({'papers': Paper.objects.all()})
+            context.update({'userData': request.user})
+
             context.update({'selectedPaper': favoritePaper.objects.all().filter(pcm=request.user)})
 
             if request.GET.get('SubmitPaper'):
@@ -164,16 +171,19 @@ def index(request):
 def view_paper(request, id):
     context = {}
     if request.user.is_authenticated():
-        paper = Paper.objects.filter(id=id).first()
-        context.update({'paper': paper})
+       paper = Paper.objects.filter(id=id).first()
 
-        if request.user.groups.filter(name__in=['PCC']).exists():
-            notification = Notifcation.objects.filter(paper=paper).first()
-            notification.read = True
-            notification.save()
-            context.update({'role': 'PCC'})
-        elif request.user.groups.filter(name__in=['PCM']).exists():
-             context.update({'role': 'PCM'})
+       if paper:
+
+            context.update({'paper': paper})
+
+            if request.user.groups.filter(name__in=['PCC']).exists():
+                 notification = Notifcation.objects.filter(paper=paper).first()
+                 notification.read = True
+                 notification.save()
+                 context.update({'role': 'PCC'})
+            elif request.user.groups.filter(name__in=['PCM']).exists():
+                context.update({'role': 'PCM'})
 
     return render(request, 'view_paper.html', context)
 
@@ -268,6 +278,10 @@ def reviewPaper(request):
         rating = request.POST["rating"]
         comment = request.POST["comment"]
         Review.objects.all().filter(paper=paper).update(comment=comment, rate=rating)
+        user = User.objects.filter(groups__name='PCC').first()
+        notiftemp = NotifcationTemp.objects.all().filter(nameID="paper_review").first()
+        notification = Notifcation(user=user, reviewedPaper= Review.objects.all().filter(paper=paper).id, notiftemp=notiftemp)
+        notification.save()
         return redirect("/")
     if id:
        context = {"paper":Paper.objects.all().filter(pk=id).first()}

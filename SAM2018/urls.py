@@ -2,6 +2,8 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+
+from SAM2018 import notification
 from SAM2018 import views, cPanel
 from django.conf.urls.static import static
 from django.conf import settings
@@ -27,5 +29,6 @@ urlpatterns = [
                             url(r'^paperUploaded', views.index),
                             url(r'^updateNT', cPanel.updateNT),
                          url(r'^FavoritePapers', views.index),
-                         url(r'^reviewPaper', views.reviewPaper)
+                         url(r'^reviewPaper', views.reviewPaper),
+                    url(r'^notification', notification.index)
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -5,10 +5,15 @@ from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
 from django.template.context_processors import csrf
 from django.shortcuts import render_to_response
-from SAM2018.models import Deadline, NotifcationTemp
+from SAM2018.models import Deadline, NotifcationTemp, Notifcation
 from SAM2018.user import user, Role
 
 users = []
+def sendNotifcation(user):
+     notiftemp = NotifcationTemp.objects.all().filter(nameID="account").first()
+     notification = Notifcation(user=user, notiftemp=notiftemp)
+     notification.save()
+
 def admin(request):
      context = {}
      return render(request, 'admin.html', context)
@@ -102,7 +107,7 @@ def addNewUser(request):
 
      grupos = Group.objects.all().filter(name=groupName).first()
      user.groups.set([grupos])
-
+     sendNotifcation(user)
 
 
 
@@ -131,6 +136,7 @@ def updateUser(request):
 
      grupos = Group.objects.all().filter(name=groupName).first()
      user.groups.set([grupos])
+     sendNotifcation(user)
 
      return redirect("/userMangament")
 
@@ -140,6 +146,7 @@ def deleteUser(request):
      print ("user nqme ehf",userName)
 
      user = getUserObject(userName).delete()
+     sendNotifcation(user)
 
      return redirect("/userMangament")
 
@@ -188,6 +195,9 @@ def templates(request):
 # hadlee  notifications  functionality
 def setUpNotifcationTemp():
      NotifcationTemp(nameID="paper_submission",text="you have a nice paper").save()
+     NotifcationTemp(nameID="account", text="Your account has been change successfully!!").save()
+     NotifcationTemp(nameID="paper_review", text="This paper has been reviewed !!").save()
+
 
 def notifications(request):
      context = {}

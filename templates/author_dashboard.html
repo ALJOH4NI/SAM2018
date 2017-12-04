@@ -47,7 +47,46 @@ section {
 </nav>
 
     <div class="container">
+   <script>
 
+    $(document).ready(function(){
+
+        $("")
+        function makeNread() {
+
+        }
+
+        setInterval( SAMGetJSON, 1000 );
+
+        function SAMGetJSON () {
+            var data = {"role":"Author","username":"{{userData.username}}"}
+
+              $.getJSON("notification",data, function(result){
+
+               $.each(result, function(i, field){
+                                       $("#not").html("")
+
+              $.each(field, function(i, field) {
+                  $("#not").append(" <div class='alert alert-info' id ='"+field['id']+"'><strong>Info!  "+field['text']+"</strong></div>");
+
+
+                  });
+
+
+                  });
+            });
+        }
+
+
+
+
+
+
+    });
+</script>
+
+        <div id="not">
+        </div>
         <h3>Welcome, {{user.first_name}}!</h3>
         <p>Your role is {{groups}}</p>
         <hr style="border:1px solid black">

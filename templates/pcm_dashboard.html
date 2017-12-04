@@ -40,6 +40,40 @@ section {
 {% if user.is_authenticated %}
 {%if is_pcm %}
 
+    <script>
+
+    $(document).ready(function(){
+
+        setInterval( SAMGetJSON, 1000 );
+
+        function SAMGetJSON () {
+            var data = {"role":"PCM","username":"{{userData.username}}"}
+
+              $.getJSON("notification",data, function(result){
+
+               $.each(result, function(i, field){
+                                       $("#not").html("")
+
+              $.each(field, function(i, field) {
+                  $("#not").append("<br /> <div class='alert alert-info ' id ='"+field['id']+"'><strong>Info! <br/>  "+field['text']+"</strong></div></b>");
+
+
+                  });
+
+
+                  });
+            });
+        }
+
+
+
+
+
+
+    });
+</script>
+
+
 <nav class="navbar navbar-inverse">
     <div calss="navbar-header">
             <a class="navbar-brand"  href="{% url 'index' %}">SAM2018</a>
@@ -48,6 +82,8 @@ section {
             <a class="nav navbar-brand "  href="{% url 'logout' %}">Logout</a>
     </div>
 </nav>
+    <div id="not">
+        </div>
     {% if SubmitPaper %}
 
     <div class="container">
@@ -117,6 +153,12 @@ section {
     <h3>You are assigned to these papers: </h3>
     <hr style="border:1px solid black">
 
+{#<div class="card">#}
+{#      <div class="card-block">#}
+{#        <h3 class="card-title">Special title treatment</h3>#}
+{#        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>#}
+{#        <a href="#" class="btn btn-primary">Go somewhere</a>#}
+{#      </div>#}
 
 <div class="row">
   <div class="col-sm-6">
