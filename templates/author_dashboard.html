@@ -87,7 +87,9 @@ section {
     {% if not submittedPaper %}
 
     <div class="container">
+   <script>
 
+<<<<<<< HEAD
     <div class="jumbotron jumbotron-fluid">
           <div class="container">
             <h1 class="display-3">Welcome, {{user.first_name}}!</h1>
@@ -96,6 +98,49 @@ section {
     </div>
 
      <hr style="border:1px solid black">
+=======
+    $(document).ready(function(){
+
+        $("")
+        function makeNread() {
+
+        }
+
+        setInterval( SAMGetJSON, 1000 );
+
+        function SAMGetJSON () {
+            var data = {"role":"Author","username":"{{userData.username}}"}
+
+              $.getJSON("notification",data, function(result){
+
+               $.each(result, function(i, field){
+                                       $("#not").html("")
+
+              $.each(field, function(i, field) {
+                  $("#not").append(" <div class='alert alert-info' id ='"+field['id']+"'><strong>Info!  "+field['text']+"</strong></div>");
+
+
+                  });
+
+
+                  });
+            });
+        }
+
+
+
+
+
+
+    });
+</script>
+
+        <div id="not">
+        </div>
+        <h3>Welcome, {{user.first_name}}!</h3>
+        <p>Your role is {{groups}}</p>
+        <hr style="border:1px solid black">
+>>>>>>> b6220ecf5aeb1c103088aa29944cb848a33a4b6d
 
      {% if not allowed %}
          <div class="alert alert-danger" role="alert">
