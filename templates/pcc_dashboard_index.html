@@ -1,8 +1,8 @@
 <style>
 
 body {
-  margin: 0;
-  font-weight: 500;
+    margin: 0;
+
 
 }
 
@@ -35,74 +35,80 @@ section {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
 </head>
 <body>
-         <nav class="navbar navbar-inverse">
-                <div calss="navbar-header">
-				    <a class="navbar-brand" href="{% url 'index' %}">SAM2018</a>
-                    <a class="nav navbar-brand"  href="{% url 'view_reports' %}">List Reports</a>
-				    <a class="nav navbar-brand"  href="{% url 'view_reviewed_papers' %}">Generate Reports</a>
-				    <a class="nav navbar-brand"  href="{% url 'logout' %}">Logout</a>
-                </div>
-           </nav>
-        <h1> PCC Dashboard </h1>
 
-        {% if paper_count > 0 %}
-        <div>
-            {% if NumNotifications > 0 %}
-            <div class="alert alert-success" role="alert">
-                <p>You have {{NumNotifications}} new Papers to assign!</p>
-                {% for n in notification %}
-                <ul>
-                    <li><a href="{% url 'view_paper_url' n.paper.id  %}">{{n.paper.title}} || The Author: {{n.paper.user.first_name}}</a></li>
-                </ul>
-                {% endfor %}
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">SAM2018</a>
             </div>
-            {% else %}
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="{% url 'index' %}">Home</a></li>
+              <li><a href="{% url 'view_reports' %}">List Reports</a></li>
+              <li><a href="{% url 'view_reviewed_papers' %}">Generate Reports</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+          </div>
+        </nav>
 
-            <div class="alert alert-info" role="alert">
-                <p>You don't have any new papers to assign !!</p>
-            </div>
-            {% endif %}
+         <div class="container">
+
+         <div class="jumbotron jumbotron-fluid">
+              <div class="container">
+                <h1 class="display-3">Welcome, {{user.first_name}}!</h1>
+                <p class="lead">Your role is {{groups}}</p>
+              </div>
         </div>
 
-        <form name="assign" method="post">
-            {% csrf_token %}
-            <div>
-                <p><h4> Select a paper you wish to assign: </h4></p>
 
-                {% for item in papers %}
-                <input type="radio" name="paper_id" value={{ item.id }}> {{item.title}} || Submitted by: {{item.user.first_name}} <br>
-                {% endfor %}
-            </div>
 
-            <div>
-                <p><h4> Select three evaluators or PCMs:</h4></p>
-                {% for item in evaluators %}
-                <input type="checkbox" name="pcm_list" value={{ item.id }}> {{item.first_name}} {{item.last_name}} <br>
-                    <ul>
-                        <P>Favoriate paper by {{item.first_name}}</P>
-                        {% for f in favoritePaper %}
-                            {% if f.pcm.id == item.id  %}
-                             <li> {{ f.papers.title }}</li>
 
-                            {% endif %}
-                            {% endfor %}
-                    </ul>
-                    <hr>
+          <from name="assign" method="post">
+                    {% csrf_token %}
 
-                {% endfor %}
-                {{evaluators.first_name}}
-            </div>
+                                <p><h4> Select a paper you wish to assign: </h4></p>
 
-            <br><br>
+                                {% for item in papers %}
+
+                                    <div class="panel panel-default">
+                                          <div class="panel-heading"><input type="radio" name="paper_id" value={{ item.id }}> {{item.title}}</div>
+                                        <div class="panel-body"><strong> Submitted by:</strong> {{item.user.first_name}}</div>
+                                    </div>
+                                {% endfor %}
+
+                        <hr style="border:1px solid black">
+
+                        <h4> Select three evaluators or PCMs:</h4>
+
+                                {% for item in evaluators %}
+                                <div class="panel panel-info">
+                                    <div class="panel-heading"><input type="checkbox" name="pcm_list" value={{ item.id }}> {{item.first_name}} {{item.last_name}}</div>
+                                                    <div class="panel-body">
+                                                        <P><strong>Favorite paper by</strong> {{item.first_name}}</P>
+                                                            <ul>
+                                                            {% for f in favoritePaper %}
+                                                                {% if f.pcm.id == item.id  %}
+
+                                                                 <li> {{ f.papers.title }}</li>
+
+                                                                {% endif %}
+                                                             {% endfor %}
+                                                            </ul>
+                                                    </div>
+                                </div>               <hr>
+                                {% endfor %}
+                                {{evaluators.first_name}}
+
+
             <input type="submit" class="btn btn-success" value="Assign Paper">
+            </from>
 
-        </form>
-        {% else %}
-        <br><br>
-        <p>There are no pending papers.</p>
-        {% endif %}
+       
 
         <div>
             {% if messages %}
@@ -113,5 +119,8 @@ section {
                 {% endfor %}
             {% endif %}
         </div>
+
+
+  </div> <!-- container -->
 </body>
 </html>

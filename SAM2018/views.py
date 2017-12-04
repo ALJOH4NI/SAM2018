@@ -2,9 +2,13 @@ import sys
 
 from django.db.models import Count
 from django.shortcuts import render, render_to_response, redirect
+
+from SAM2018 import cPanel, notification
+from SAM2018.cPanel import notifications
+from SAM2018.observer import Observer
 from .forms import Signupform, UplaodFile
 from django.contrib.auth import logout, authenticate, login, update_session_auth_hash
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, request
 from django.contrib.auth.models import Group
 
 from .models import Paper, Notifcation, Deadlines, Review, Report, Deadline, favoritePaper
@@ -12,10 +16,16 @@ from django.contrib.auth.models import User
 from .forms import AssignForm, DeadlineForm
 from django.contrib import messages
 import datetime
+from observable import Observable
 
+class view(Observer):
+
+    def update(self, *args, **kwargs):
+        print("")
 
 
 def index(request):
+    Observable.SAMObservable.update_observers('admin', something='Hello World')
 
     context = {}
     if request.user.is_authenticated() == False:
@@ -56,6 +66,7 @@ def index(request):
                             'paper_count': num_papers
                             })
 
+
             return render(request, 'pcc_dashboard_index.html', context)
 
         # Admin login
@@ -80,6 +91,8 @@ def index(request):
             context.update({'paper': paper})
             context.update({'is_author': 'is_author'})
             context.update({'groups': request.user.groups.all().first()})
+            if request.GET.get('submittedPaper'):
+                context.update({'submittedPaper': 'true'})
 
             if request.GET.get('paperUploaded'):
                 context.update({'uploaded': 'uploaded'})
@@ -90,8 +103,8 @@ def index(request):
                 if request.method == "POST":
                     form = UplaodFile(request.POST, request.FILES)
                     if form.is_valid():
-                        newpaper = Paper(uplaod=request.FILES['uplaod'], title=request.POST['title'], version="1",
-                                         user=request.user)
+                        newpaper = Paper(uplaod=request.FILES['uplaod'], title=request.POST['title'], version=request.POST['version'],
+                                         authorName=request.POST['authorName'], contact=request.POST['contact']  ,user=request.user)
                         newpaper.save()
                         user = User.objects.filter(groups__name='PCC').first()
                         notification = Notifcation(user=user, paper=newpaper)

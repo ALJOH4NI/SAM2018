@@ -39,14 +39,22 @@ section {
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-    <div calss="navbar-header">
-        <a class="navbar-brand" href="{% url 'index' %}">SAM2018</a>
-        <a class="nav navbar-brand"  href="{% url 'view_reports' %}">List Reports</a>
-        <a class="nav navbar-brand"  href="{% url 'view_reviewed_papers' %}">Generate Reports</a>
-        <a class="nav navbar-brand"  href="{% url 'logout' %}">Logout</a>
-    </div>
-</nav>
+<nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">SAM2018</a>
+            </div>
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="{% url 'index' %}">Home</a></li>
+              <li><a href="{% url 'view_reports' %}">List Reports</a></li>
+              <li><a href="{% url 'view_reviewed_papers' %}">Generate Reports</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+            </ul>
+          </div>
+        </nav>
+
 <h1> List of Reviewed Papers </h1>
 
     <div style="margin: 50px;">

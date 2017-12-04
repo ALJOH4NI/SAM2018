@@ -2,7 +2,6 @@
 
 body {
   margin: 0;
-  font-weight: 500;
 
 }
 
@@ -22,7 +21,35 @@ section {
     clear: left;
     text-align: center;}
 
+    .alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+    opacity: 1;
+    transition: opacity 0.6s;
+    margin-bottom: 15px;
+}
+
+.alert.success {background-color: #4CAF50;}
+.alert.info {background-color: #2196F3;}
+.alert.warning {background-color: #ff9800;}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
 </style>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,6 +59,8 @@ section {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
 </head>
 <body>
 
@@ -39,18 +68,34 @@ section {
 {% if user.is_authenticated %}
 {%if is_author %}
 
-<nav class="navbar navbar-inverse">
-    <div calss="navbar-header">
-            <a class="navbar-brand"  href="{% url 'index' %}">SAM2018</a>
-            <a class="nav navbar-brand "  href="{% url 'logout' %}">Logout</a>
-    </div>
-</nav>
+    <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">SAM2018</a>
+            </div>
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="{% url 'index' %}">Home</a></li>
+              <li><a href="/?submittedPaper=true">Submitted paper</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+          </div>
+        </nav>
+
+
+    {% if not submittedPaper %}
 
     <div class="container">
 
-        <h3>Welcome, {{user.first_name}}!</h3>
-        <p>Your role is {{groups}}</p>
-        <hr style="border:1px solid black">
+    <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="display-3">Welcome, {{user.first_name}}!</h1>
+            <p class="lead">Your role is {{groups}}</p>
+          </div>
+    </div>
+
+     <hr style="border:1px solid black">
 
      {% if not allowed %}
          <div class="alert alert-danger" role="alert">
@@ -60,54 +105,106 @@ section {
 
     {% if allowed %}
     {% csrf_token %}
+
+
+
+        <div class="alert success">
+          <span class="closebtn">&times;</span>
+          <strong>Success!</strong> you have submitted a paper.
+        </div>
+
+        <script>
+                var close = document.getElementsByClassName("closebtn");
+                var i;
+
+                for (i = 0; i < close.length; i++) {
+                    close[i].onclick = function(){
+                        var div = this.parentElement;
+                        div.style.opacity = "0";
+                        setTimeout(function(){ div.style.display = "none"; }, 600);
+                    }
+                }
+        </script>
+
+
+     <h2 class="display-3">Submit paper </h2>
+     <br>
     <form class="form-horizontal" method="post" enctype="multipart/form-data">
     {% csrf_token %}{% csrf_token %}
+    <div class="container">
+            <div class="form-group">
+                    <label class="col-form-label" for="formGroupExampleInput">Paper title</label>
+                    <br>
+                    {{form.title}}
+                    <br>
+            </div>
 
+             <div class="form-group">
+                    <label class="col-form-label" for="formGroupExampleInput">Author name/s</label>
+                    <br>
+                    {{form.authorName}}
+                    <br>
+            </div>
 
-                        <label>{{form.title.label}}</label>
-                        {{form.title}} <br>
-                        <label>{{form.upload.label}}</label>
-                        {{form.uplaod}} <br>
-                        <label>{{form.authorName.label}}</label>
-                        {{form.authorName}} <br>
-                        <label>{{form.version.label}}</label>
-                        {{form.version}} <br>
-                        <label>{{form.contact.label}}</label>
-                        {{form.contact}} <br>
+            <div class="form-group">
+                    <label class="col-form-label" for="formGroupExampleInput">Version</label>
+                    <br>
+                    {{form.version}}
+                    <br>
+            </div>
 
-        <button type="submit">Submit Paper</button>
+            <div class="form-group">
+                    <label class="col-form-label" for="formGroupExampleInput">Contact</label>
+                    <br>
+                    {{form.contact}}
+                    <br>
+            </div>
+
+            <div class="form-group">
+                    <label class="col-form-label" for="formGroupExampleInput">Upload paper</label>
+                    <br>
+                    {{form.uplaod}}
+                    <br>
+            </div>
+    </div>
+
+        <button type="submit" class="btn btn-primary">Submit Paper</button>
     </form>
 
-        {% if uploaded %}
-           <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js">
-    $(document).ready(function(){
-        function myFunction(){
-            alert("ede")
-        }
-    })
-
-</script>
-            <div  onload="myFunction()"class="alert alert-success" role="alert">
-            <p>You don't have any new papers to assign !!</p>
-         </div>
-        {% endif %}
-
     {% endif %}
-
 </div>
-
+{% endif %}
 <br>
 <br>
 <br>
     <!-- list the author papers and access -->
+    {% if submittedPaper %}
 <div class="container">
 <hr style="border:1px solid black">
 
-            <h2>Paper submitted: </h2>
-                {% for n in paper %}
-                    <input type="checkbox" name="PAPER" value={{ n.id }}> <a href="{% url 'view_paper_url' n.id  %}"> {{n.title}} || The Author: {{n.user.first_name}}</a><br>
-                {% endfor %}
+            <h2 class="display-3">Paper submitted </h2>
+            {% for n in paper %}
 
+
+                    <div class="panel panel-default">
+                          <div class="panel-heading"><h3>{{n.title}}</h3></div>
+
+                          <div class="panel-body">
+                              <h4> Paper Information:</h4>
+                              <ul>
+                                <li>The author/s: {{ n.authorName }} </li>
+                                <li>Version: {{ n.version }} </li>
+                                <li>Contact: {{ n.contact }}</li>
+                            </ul>
+                               <a href="{% url 'view_paper_url' n.id  %}" class="btn btn-primary">View details</a>
+                          </div>
+
+                    </div>
+
+
+            {% endfor %}
+
+{% endif %}
 <br>
 <br>
 <br>

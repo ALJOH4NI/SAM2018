@@ -1,14 +1,26 @@
 from __future__ import print_function
 import sys
+from pickle import GET
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
-from django.template.context_processors import csrf
+from django.template.context_processors import csrf, request
 from django.shortcuts import render_to_response
+
+from SAM2018 import observable
 from SAM2018.models import Deadline, NotifcationTemp
+from SAM2018.observable import Observable
+from SAM2018.observer import Observer
 from SAM2018.user import user, Role
 
 users = []
+class controlPanel(Observer):
+     def update(self, *args, **kwargs):
+          print ("update controlPanel")
+          redirect("/")
+
+
 def admin(request):
      context = {}
      return render(request, 'admin.html', context)
@@ -50,6 +62,8 @@ def getUserData(usename):
 
 
 def userMangament(request):
+     observable = Observable.SAMObservable
+     observable.update_observers('nnsmsmhbbhhb', something='Hello World')
      context = {}
      context.update(csrf(request))
      selectedUser = request.GET.get('selectedUser')
