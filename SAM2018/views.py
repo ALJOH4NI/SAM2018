@@ -38,8 +38,8 @@ def index(request):
 
     elif request.user.is_authenticated():  # PCC, Author and PCM
         if request.user.groups.filter(name__in=['PCC']).exists():
-
             if request.method == 'POST':
+                print ("sdsdsdsdsd hsdusgdjs ")
                 paper_id = request.POST["paper_id"]
                 pcms = request.POST.getlist('pcm_list')
                 paper = Paper.objects.filter(id=paper_id).first()
@@ -48,6 +48,11 @@ def index(request):
                     if Review.objects.filter(pcm=pcm_user, paper=paper).count() == 0:
                         review = Review(paper=paper, pcm=pcm_user)
                         review.save()
+                        notiftemp = NotifcationTemp.objects.all().filter(nameID="assigned_paper").first()
+                        notification = Notifcation(user=pcm_user,
+                                                   reviewedPaper=Review.objects.all().filter(paper=paper).first().id,
+                                                   notiftemp=notiftemp)
+                        notification.save()
                 messages.success(request, 'The paper has been assign successfully!')
 
             reviews = Review.objects.all()
@@ -59,14 +64,8 @@ def index(request):
             context.update({'userData': request.user})
             context.update({'role': 'PCC'})
 
-            notification = Notifcation.objects.filter(read=False).filter(paper__isnull=False)
-            num_notification = len(notification)
-            num_papers = len(papers)
-            context.update({'groups': request.user.groups.all().first(),
-                            'NumNotifications': num_notification,
-                            'notification': notification,
-                            'paper_count': num_papers
-                            })
+
+            context.update({'groups': request.user.groups.all().first()})
 
 
             return render(request, 'pcc_dashboard_index.html', context)
@@ -285,15 +284,15 @@ def logout_view(request):
 def reviewPaper(request):
     context = {}
     id = request.GET.get('id')
-
+    print (id)
     if request.method == 'POST':
-        paper = Paper.objects.filter(id=request.POST["id"]).first()
+        paper = Paper.objects.filter(pk=request.POST["id"]).first()
         rating = request.POST["rating"]
         comment = request.POST["comment"]
         Review.objects.all().filter(paper=paper).update(comment=comment, rate=rating)
         user = User.objects.filter(groups__name='PCC').first()
         notiftemp = NotifcationTemp.objects.all().filter(nameID="paper_review").first()
-        notification = Notifcation(user=user, reviewedPaper= Review.objects.all().filter(paper=paper).id, notiftemp=notiftemp)
+        notification = Notifcation(user=user, reviewedPaper= Review.objects.all().filter(paper=paper).first().id, notiftemp=notiftemp)
         notification.save()
         return redirect("/")
     if id:

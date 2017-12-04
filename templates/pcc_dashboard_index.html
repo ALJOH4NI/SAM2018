@@ -62,7 +62,7 @@ section {
               $.each(field, function(i, field) {
                       if (field['title']){
 
-                          $("#not").append("<br /> <div class='alert alert-info ' id ='"+field['id']+"'><strong>Info! <br/>  "+field['text']+"  "+field['title']+"</strong></div></b>");
+                          $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+field['title']+"  "+"<a href='#' class='alert-link'>"+field['text']+" </div></b>");
 
                       }else if (field['PaperTitle']){
                           $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+field['PaperTitle']+"  "+"<a href='#' class='alert-link'>"+field['text']+" </div></b>");
@@ -99,9 +99,7 @@ section {
            </nav>
         <h1> PCC Dashboard </h1>
 
-        <div id="not">
 
-        </div>
 
         <nav class="navbar navbar-default">
           <div class="container-fluid">
@@ -121,17 +119,30 @@ section {
 
          <div class="container">
 
+
          <div class="jumbotron jumbotron-fluid">
               <div class="container">
                 <h1 class="display-3">Welcome, {{user.first_name}}!</h1>
                 <p class="lead">Your role is {{groups}}</p>
               </div>
         </div>
+          <div>
+            {% if messages %}
+                {% for message in messages %}
+            <div class="alert alert-success">
+                <strong>Success!</strong>  {{ message }}
+            </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+         <div id="not">
+
+           </div>
 
 
 
-
-          <from name="assign" method="post">
+          <form  name="assign" method="POST">
                     {% csrf_token %}
 
                                 <p><h4> Select a paper you wish to assign: </h4></p>
@@ -167,21 +178,11 @@ section {
                                 {% endfor %}
                                 {{evaluators.first_name}}
 
-
             <input type="submit" class="btn btn-success" value="Assign Paper">
-            </from>
+            </form>
 
        
 
-        <div>
-            {% if messages %}
-                {% for message in messages %}
-            <div class="alert alert-success">
-                <strong>Success!</strong>  {{ message }}
-            </div>
-                {% endfor %}
-            {% endif %}
-        </div>
 
 
   </div> <!-- container -->

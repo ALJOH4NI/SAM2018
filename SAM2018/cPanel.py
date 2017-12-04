@@ -211,9 +211,10 @@ def templates(request):
 
 # hadlee  notifications  functionality
 def setUpNotifcationTemp():
-     NotifcationTemp(nameID="paper_submission",text="you have a nice paper").save()
+     NotifcationTemp(nameID="paper_submission",text="Paper has been submitted successfully").save()
      NotifcationTemp(nameID="account", text="Your account has been change successfully!!").save()
      NotifcationTemp(nameID="paper_review", text="This paper has been reviewed !!").save()
+     NotifcationTemp(nameID="assigned_paper", text="You have assigned paper to review").save()
 
 
 def notifications(request):

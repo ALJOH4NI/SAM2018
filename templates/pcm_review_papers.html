@@ -50,9 +50,10 @@ section {
 <h1> Review Paper </h1>
 
     <div style="margin: 50px;">
-        <form  name="reviewPaper" method="post" action="/reviewPaper">
-            <input type="hidden" name="id" value="{{paper.pk}}">
+        <form  name="reviewPaper" method="POST" action="/reviewPaper">
         {% csrf_token %}
+                        <input type="hidden" name="id" value="{{paper.pk}}">
+
         <div class="panel-group">
             <div class="panel panel-default">
                 <div class="panel-heading">Paper Name: {{paper.title}}</div>
