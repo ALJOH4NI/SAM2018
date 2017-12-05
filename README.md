@@ -7,7 +7,7 @@
 
 3. Execute ` python manage.py makemigrations` then ` python manage.py migrate` then ` python manage.py runserver`
 
-4. Open  browser window one in normal window `http://localhost:80000/`
+4. Open new browser window  in normal mode `http://localhost:80000/`
 
 5. This will present you the first page which is `login Page`.
 
