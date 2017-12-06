@@ -19,12 +19,13 @@ python 2.0 and above.
 5. This will present you the first page which is `login Page`.
 
 6. Creating the PCC and PCM username via the admin page which can be access via entring username: admin password: 1.
+7. Create the author using the registration page.
 
 *Hint to login with diffrent user Role you can use Open a new browser window in incognito mode and start testing the SAM2018 functionality.   
 
 
 Usernames:
-PCC: pcc1
+PCC: pcc
 password: 1
 
 Admin: admin
