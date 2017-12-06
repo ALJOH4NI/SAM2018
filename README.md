@@ -15,7 +15,7 @@
 
 *Hint to login with diffrent user Role you can use Open a new browser window in incognito mode and start testing the SAM2018 functionality.   
 
-<code>
+
 Usernames:
 PCC: pcc1
 password: 1
@@ -34,8 +34,6 @@ password: 1
 PCM3:
 username:pcm3
 password: 1
-</code>
-
 
 
 
