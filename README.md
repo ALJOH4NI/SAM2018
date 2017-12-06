@@ -11,7 +11,31 @@
 
 5. This will present you the first page which is `login Page`.
 
-*Hint to login with diffrent user Role you can use Open a new browser window in incognito mode and start testing the SAM2018 functionality.   
+6. Creating the PCC and PCM username via the admin page which can be access via entring username: admin password: 1.
+
+*Hint to login with diffrent user Role you can use Open a new browser window in incognito mode and start testing the SAM2018 functionality.   
+
+<code>
+Usernames:
+PCC: pcc1
+password: 1
+
+Admin: admin
+password: 1
+
+PCM1:
+username:pcm1
+Password: 1 
+
+PCM2:
+username:pcm2
+password: 1
+
+PCM3:
+username:pcm3
+password: 1
+</code>
+
 
 
 
