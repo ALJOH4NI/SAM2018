@@ -235,6 +235,10 @@ def generate_report(request, paper_id):
                     review.report = report
                     review.save()
 
+                message = NotifcationTemp.objects.all().filter(nameID="ReportIsGenerated").first()
+
+                Notifcation(user=paper.user, notiftemp=message).save()
+
                 messages.success(request, 'The report has been saved successfully!')
                 return redirect('index')
 

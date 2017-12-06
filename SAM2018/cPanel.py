@@ -212,6 +212,8 @@ def setUpNotifcationTemp():
      NotifcationTemp(nameID="assigned_paper", text="You have assigned paper to review").save()
      NotifcationTemp(nameID="ThreeReviewCompleted", text=" all PCM reviewed this paper, ").save()
      NotifcationTemp(nameID="resubmit", text=" Please resubmit you paper again.").save()
+     NotifcationTemp(nameID="ReportIsGenerated", text=" Your paper has been accepted.").save()
+
 
 
 
