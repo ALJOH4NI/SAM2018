@@ -55,7 +55,7 @@ section {
                                        $("#not").html("")
 
               $.each(field, function(i, field) {
-                  $("#not").append("<br /> <div class='alert alert-info yourButtonClass' id ='"+field['id']+"'><strong>Info! <br/>  "+field['text']+"</strong></div></b>");
+                          $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+"  "+"<a href='?notificationChangeStatus="+field['id']+"' class='alert-link'>"+field['text']+" </div></b>");
 
 
                   });
@@ -84,13 +84,14 @@ section {
 </nav>
     <div id="not">
         </div>
-    {% if SubmitPaper %}
-
-    <div class="container">
+      <div class="container">
 
         <h3>Welcome, {{user.first_name}}!</h3>
         <p>Your role is {{groups}}</p>
         <hr style="border:1px solid black">
+    {% if SubmitPaper %}
+
+
 
 
     {% csrf_token %}
@@ -139,7 +140,7 @@ section {
                 <p><h4> Select the papers you wish to review: </h4></p>
 
                 {% for item in papers %}
-                <input type="checkbox" name="paper_id" value={{item.id}}> {{item.id}} || Submitted by: {{item.user.first_name}} <br>
+                <input type="checkbox" name="paper_id" value={{item.id}}> {{item.title}} || Submitted by: {{item.user.first_name}} <br>
                 {% endfor %}
             </div>
 <br><br>

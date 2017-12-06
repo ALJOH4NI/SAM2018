@@ -54,26 +54,30 @@ section {
         function SAMGetJSON () {
             var data = {"role":"PCC","username":"{{userData.username}}"}
 
+
               $.getJSON("notification",data, function(result){
 
                $.each(result, function(i, field){
                                        $("#not").html("")
 
               $.each(field, function(i, field) {
+                  if (field['id']){
                       if (field['title']){
 
-                          $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+field['title']+"  "+"<a href='#' class='alert-link'>"+field['text']+" </div></b>");
+                          $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+field['title']+"  "+"<a href='?notificationChangeStatus="+field['id']+"' class='alert-link'>"+field['text']+" </div></b>");
 
                       }else if (field['PaperTitle']){
-                          $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+field['PaperTitle']+"  "+"<a href='#' class='alert-link'>"+field['text']+" </div></b>");
+                          $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+field['PaperTitle']+"  "+"<a href='?notificationChangeStatus="+field['id']+"' class='alert-link'>"+field['text']+" </div></b>");
 
                       }else if (field['AllReviewPaper']) {
-                          $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+field['AllReviewPaper']+"  "+"<a href='#' class='alert-link'>"+field['text']+" </div></b>");
+                          $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+field['AllReviewPaper']+"  "+"<a href='?notificationChangeStatus="+field['id']+"' class='alert-link'>"+field['text']+" </div></b>");
 
                       }else {
-                          $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+"  "+"<a href='#' class='alert-link'>"+field['text']+" </div></b>");
+                          $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+"  "+"<a href='?notificationChangeStatus="+field['id']+"' class='alert-link'>"+field['text']+" </div></b>");
 
                       }
+                  }
+
 
 
                   });
@@ -83,9 +87,6 @@ section {
             });
         }
 
-    function test() {
-        alert( "Handler for .click() called." );
-        };
 
 
 
@@ -95,14 +96,7 @@ section {
 </script>
 
 
-         <nav class="navbar navbar-inverse">
-                <div calss="navbar-header">
-				    <a class="navbar-brand"  href="{% url 'index' %}">SAM2018</a>
-                    <a class="nav navbar-brand"  href="{% url 'view_reports' %}">List Reports</a>
-				    <a class="nav navbar-brand"  href="{% url 'view_reviewed_papers' %}">Generate Reports</a>
-				    <a class="nav navbar-brand"  href="{% url 'logout' %}">Logout</a>
-                </div>
-           </nav>
+
         <h1> PCC Dashboard </h1>
 
 
@@ -157,7 +151,11 @@ section {
                                 {% for item in papers %}
 
                                     <div class="panel panel-default">
-                                          <div class="panel-heading"><input type="radio" name="paper_id" value={{ item.id }}> {{item.title}}</div>
+                                          <div class="panel-heading"><input type="radio" name="paper_id" value={{ item.id }}>
+
+                                                                  <a href="{% url 'view_paper_url' item.id %}"> {{item.title}}</a>
+
+                                          </div>
                                         <div class="panel-body"><strong> Submitted by:</strong> {{item.user.first_name}}</div>
                                     </div>
                                 {% endfor %}

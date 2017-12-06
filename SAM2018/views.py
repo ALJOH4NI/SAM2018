@@ -24,8 +24,11 @@ class view(Observer):
 
 
 def index(request):
-    Observable.SAMObservable.update_observers('admin', something='Hello World')
+    Observable.SAMObservable.update_observers('admin', something='update data base')
 
+    id = request.GET.get('notificationChangeStatus')
+    if id:
+        Notifcation.objects.all().filter(id=id).update(read=True)
     context = {}
     if request.user.is_authenticated() == False:
         if request.method == "POST":
@@ -100,10 +103,10 @@ def index(request):
                         newpaper = Paper(uplaod=request.FILES['uplaod'], title=request.POST['title'], version=request.POST['version'],
                                          authorName=request.POST['authorName'], contact=request.POST['contact']  ,user=request.user)
                         newpaper.save()
-                        user = User.objects.filter(groups__name='PCC').first()
+                        PCCuser = User.objects.filter(groups__name='PCC').first()
                         notiftemp = NotifcationTemp.objects.all().filter(nameID="paper_submission").first()
-                        notification = Notifcation(user=user, paper=newpaper,notiftemp=notiftemp)
-                        notification.save()
+                        Notifcation(user=PCCuser, paper=newpaper,notiftemp=notiftemp).save()
+
                         context.update({'uploaded': 'uploaded'})
                         return redirect('/?paperUploaded="true"')
                 else:
@@ -129,7 +132,7 @@ def index(request):
             context.update({'selectedPaper': favoritePaper.objects.all().filter(pcm=request.user)})
 
             if request.GET.get('SubmitPaper'):
-                context.update({"SubmitPaper" : "true"})
+                context.update({"SubmitPaper": "true"})
 
 
 
@@ -181,9 +184,7 @@ def view_paper(request, id):
             context.update({'paper': paper})
 
             if request.user.groups.filter(name__in=['PCC']).exists():
-                 notification = Notifcation.objects.filter(paper=paper).first()
-                 notification.read = True
-                 notification.save()
+
                  context.update({'role': 'PCC'})
             elif request.user.groups.filter(name__in=['PCM']).exists():
                 context.update({'role': 'PCM'})
@@ -207,7 +208,7 @@ def view_reviewed_papers(request):
             data = []
             for paper in Paper.objects.all():
                 reviews = []
-                review_items = Review.objects.filter(paper=paper)
+                review_items = Review.objects.filter(paper=paper, rate__isnull=False)
                 for review in review_items:
                     reviews.append(review)
 
@@ -284,23 +285,28 @@ def reviewPaper(request):
         paper = Paper.objects.filter(pk=request.POST["id"]).first()
         rating = request.POST["rating"]
         comment = request.POST["comment"]
-        Review.objects.all().filter(paper=paper).update(comment=comment, rate=rating)
-        user = User.objects.filter(groups__name='PCC').first()
+        Review.objects.all().filter(paper=paper,pcm=request.user).update(comment=comment, rate=rating)
+        PCMuser = User.objects.filter(groups__name='PCC').first()
         notiftemp1 = NotifcationTemp.objects.all().filter(nameID="assigned_paper").first()
-        Notifcation.objects.all().filter(user=user, reviewedPaper=Review.objects.all().filter(paper=paper).first().id,
+        Notifcation.objects.all().filter(user=request.user, reviewedPaper=Review.objects.all().filter(paper=paper).first().id,
                                    notiftemp=notiftemp1).update(read=True)
-        if len(Review.objects.all().filter(paper=paper)) == 3:
-            message = NotifcationTemp.objects.all().filter(nameID="ThreeReviewCompleted").first()
-            if not Notifcation.objects.all().filter(notiftemp=message).filter(AllReviewPaper=paper.id).first():
-                user = User.objects.filter(groups__name='PCC').first()
-                Notifcation(AllReviewPaper=paper.id, notiftemp=message, user=user).save()
 
         notiftemp = NotifcationTemp.objects.all().filter(nameID="paper_review").first()
-        notification = Notifcation(user=user, reviewedPaper= Review.objects.all().filter(paper=paper).first().id, notiftemp=notiftemp)
+        notification = Notifcation(user=PCMuser, reviewedPaper=Review.objects.all().filter(paper=paper).first().id,
+                                   notiftemp=notiftemp)
         notification.save()
+
+        if len(Review.objects.all().filter(paper=paper,rate__isnull=False)) == 3:
+            message = NotifcationTemp.objects.all().filter(nameID="ThreeReviewCompleted").first()
+            if not Notifcation.objects.all().filter(notiftemp=message).filter(AllReviewPaper=paper.id).first():
+                Notifcation(AllReviewPaper=paper.id, notiftemp=message, user=PCMuser).save()
+
+
         return redirect("/")
     if id:
        context = {"paper":Paper.objects.all().filter(pk=id).first()}
        context.update({'ReviewTemp': Template.objects.all().filter(nameID="Review").first()})
 
     return render(request, 'pcm_review_papers.html', context)
+
+

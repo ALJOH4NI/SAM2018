@@ -42,6 +42,6 @@ urlpatterns = [
                          url(r'^reviewPaper', views.reviewPaper),
                     url(r'^notification', notification.index),
                   url(r'^updateTemplates', cPanel.updateTemplates),
-                  url(r'^adminNot', cPanel.adminNot),
+                  url(r'^adminNot', cPanel.adminNot)
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

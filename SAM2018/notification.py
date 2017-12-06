@@ -29,6 +29,6 @@ def index(request):
             data.append({"isRead":n.read,"text":n.notiftemp.text,"id":n.id})
 
 
-    # print data
+    print data
 
     return JsonResponse({"data":data})

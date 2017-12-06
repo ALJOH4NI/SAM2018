@@ -3,6 +3,7 @@ import sys
 from pickle import GET
 
 from django.contrib.auth.models import User, Group
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template.context_processors import csrf, request
 
@@ -167,6 +168,8 @@ def deleteUser(request):
 # hadlee  deadlines functionality
 def setUpDeadlines():
      Deadline(nameID="paper_submission",date="2016-12-12").save()
+     Deadline(nameID="Review_submission",date="2016-12-12").save()
+
 
 def deadlines(request):
      context = {}
@@ -208,6 +211,8 @@ def setUpNotifcationTemp():
      NotifcationTemp(nameID="paper_review", text="This paper has been reviewed !!").save()
      NotifcationTemp(nameID="assigned_paper", text="You have assigned paper to review").save()
      NotifcationTemp(nameID="ThreeReviewCompleted", text=" all PCM reviewed this paper, ").save()
+     NotifcationTemp(nameID="resubmit", text=" Please resubmit you paper again.").save()
+
 
 
 def setUpTemplates():
@@ -220,7 +225,6 @@ def notifications(request):
      selected = request.GET.get('selected')
      if selected:
           selected = selected.strip()
-          print("sdsds", NotifcationTemp.objects.all().filter(nameID=selected).first())
           context.update({'selected': NotifcationTemp.objects.all().filter(nameID=selected).first()})
 
 
@@ -281,3 +285,6 @@ def adminNot(request):
      context.update({'reviews':  Review.objects.all()})
 
      return render(request, 'admin.html', context)
+
+
+

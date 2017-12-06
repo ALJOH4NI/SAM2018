@@ -105,7 +105,7 @@ section {
                                        $("#not").html("")
 
               $.each(field, function(i, field) {
-                  $("#not").append(" <div class='alert alert-info' id ='"+field['id']+"'><strong>Info!  "+field['text']+"</strong></div>");
+                          $("#not").append("<br /> <div class='alert  alert-info ' id ='"+field['id']+"'><strong>Info! </strong>  "+"  "+"<a href='?notificationChangeStatus="+field['id']+"' class='alert-link'>"+field['text']+" </div></b>");
 
 
                   });
