@@ -214,7 +214,7 @@ def view_reviewed_papers(request):
 
 
 
-                if len(review_items) > 0:
+                if len(review_items) == 3:
                     data.append({'paper': paper, 'reviews': reviews})
 
             context.update({'paper_reviews': data})
