@@ -1,4 +1,11 @@
 # SAM2018
+
+You need:
+
+Django v.11 and above.
+python 2.0 and above.
+
+
 ##How to run it
 
 1. Clone the repository and copy the directory path.
